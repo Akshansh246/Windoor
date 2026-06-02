@@ -65,7 +65,7 @@ const HomePage = () => {
 
             {/* ── Video section ─────────────────────────────────────────── */}
             <div className="w-full h-screen relative">
-                <video className="w-full h-full object-cover hero-video" muted autoPlay loop src="/public/mainVideo.mp4"></video>
+                <video className="w-full h-full object-cover hero-video" muted autoPlay loop src="/mainVideo.mp4"></video>
                 <div className="absolute bottom-16 sm:bottom-40 w-fit font-windoor-main left-6 sm:left-16 flex flex-col gap-4 sm:gap-5 text-white max-w-[90vw]">
                     <p className="tracking-[3px] uppercase text-[10px] sm:text-xs text-white/45">Excellence in Fenestration</p>
                     <h1 className="text-[26px] sm:text-4xl md:text-5xl lg:text-6xl italic font-windoor-main leading-tight font-bold">Crafting the Finer <br />Details of Architecture.</h1>
@@ -93,7 +93,7 @@ const HomePage = () => {
                     <Link to={'/about'} className="uppercase font-bold font-windoor-main border-b-2 border-windoor-primary w-fit hover:opacity-70 transition-opacity">Read Our Story</Link>
                 </div>
                 <div className="w-full md:w-1/2 lg:w-1/3">
-                    <img src="/public/images/about.png" alt="" className="w-full h-auto" />
+                    <img src="/images/about.png" alt="" className="w-full h-auto" />
                 </div>
             </div>
 
@@ -129,7 +129,7 @@ const HomePage = () => {
                     {/* Tostem */}
                     <div className="border border-windoor-secondary group cursor-pointer overflow-hidden">
                         <div className="h-56 sm:h-72 w-full overflow-hidden">
-                            <img className="h-full w-full object-cover imgz grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" src="/public/images/tostem.jpg" alt="tostem" />
+                            <img className="h-full w-full object-cover imgz grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" src="/images/tostem.jpg" alt="tostem" />
                         </div>
                         <div className="p-6 sm:p-10 flex flex-col gap-4 items-start">
                             <div className="font-windoor-main flex justify-between w-full items-start">
@@ -146,7 +146,7 @@ const HomePage = () => {
                     {/* Keller */}
                     <div className="border border-windoor-secondary group cursor-pointer overflow-hidden">
                         <div className="h-56 sm:h-72 w-full overflow-hidden">
-                            <img className="h-full w-full object-cover imgz grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" src="/public/images/kellar.png" alt="keller" />
+                            <img className="h-full w-full object-cover imgz grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" src="/images/kellar.png" alt="keller" />
                         </div>
                         <div className="p-6 sm:p-10 flex flex-col gap-4 items-start">
                             <div className="font-windoor-main flex justify-between w-full items-start">
@@ -165,7 +165,7 @@ const HomePage = () => {
 
             {/* ── Facade and Curtain Wall Systems ───────────────────────── */}
             <div className="min-h-[60vh] md:h-screen w-full relative reveal">
-                <img className="w-full h-full min-h-[60vh] md:h-screen grayscale brightness-[0.35] object-cover absolute inset-0" src="/public/images/facade.png" alt="" />
+                <img className="w-full h-full min-h-[60vh] md:h-screen grayscale brightness-[0.35] object-cover absolute inset-0" src="/images/facade.png" alt="" />
                 <div className="relative z-10 flex flex-col gap-4 sm:gap-5 items-center justify-center text-white text-center px-6 py-24 md:py-0 md:h-screen">
                     <p className="tracking-[3px] font-windoor-main uppercase text-xs text-white">The Building Envelope</p>
                     <h2 className="text-[26px] sm:text-3xl md:text-4xl lg:text-5xl font-bold font-windoor-main tracking-tight">FAÇADE &amp; CURTAIN WALLS</h2>
