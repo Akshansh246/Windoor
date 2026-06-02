@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Quicksand:wght@300..700&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&family=Manrope:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-windoor-primary: #0b0c0c;
+  --color-windoor-secondary: #5d5f5f;
+  --color-windoor-tertiary: #0c0c0b;
+
+  --color-windoor-background: #f9f9f9;
+  --color-windoor-surface: #f9f9f9;
+  --color-windoor-surface-light: #f9f9f9;
+  --color-windoor-surface-dim: #dadada;
+  --color-windoor-surface-variant: #e2e2e2;
+
+  --color-windoor-container: #eeeeee;
+  --color-windoor-container-low: #f3f3f4;
+  --color-windoor-container-high: #e8e8e8;
+
+  --color-windoor-charcoal: #222222;
+  --color-windoor-structural-grey: #d1d1d1;
+  --color-windoor-glass: #f1f4f5;
+
+  --color-windoor-outline: #747878;
+  --color-windoor-outline-light: #c4c7c7;
+
+  --color-windoor-text: #1a1c1c;
+  --color-windoor-text-muted: #444748;
+
+  --color-windoor-error: #ba1a1a;
+  --color-windoor-error-bg: #ffdad6;
+
+  --font-windoor-main: 'JetBrains Mono';
+  --font-windoor-secondary: "Manrope";
+}
+
+*{
+    box-sizing: border-box;
+}
+
+html, body, #root{
+    background-color: var(--color-windoor-background);
+    font-family: "Manrope";
+    color: var(--color-windoor-primary);
+}
+
+.btn {
+    background: linear-gradient(
+        135deg,
+        #0b0c0c 0%,
+        #222222 35%,
+        #5d5f5f 100%
+    );
+
+    color: white;
+    transition: all 0.2s ease-in-out;
+    outline: none;
+}
+
+.btn:hover {
+    transform: translateY(-2px) scale(1.04);
+    filter: brightness(1.08);
+    box-shadow: 0 12px 32px rgba(11, 12, 12, 0.18);
+}
+
+.hero-video {
+  filter: brightness(0.8)
+            grayscale(50%);
+}
+
+.imgz:hover{
+    transform: scale(1.08);
+    filter: brightness(50%);
+    transition: all 0.5s ease-in-out;
+}
+
+/* Scroll-reveal animation */
+.reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-windoor-primary);
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #f0f0f0;
+}
+
+/* Firefox scrollbar styling */
+* {
+    scrollbar-color: var(--color-windoor-primary) transparent;
+    scrollbar-width: thin;
+}
+
+
