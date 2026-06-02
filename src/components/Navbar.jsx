@@ -22,7 +22,7 @@ const Navbar = () => {
     }, []) 
     return (
         <nav className={`flex fixed top-0 left-0 right-0 w-full uppercase font-windoor-main justify-between items-center px-4 sm:px-10 py-4 sm:py-5 border-b border-windoor-outline/40 backdrop-blur-lg bg-windoor-background/80 z-50 transition-shadow duration-300 ${scrolled ? 'shadow-sm' : ''}`}>
-            <Link to={'/'} className='text-xl sm:text-2xl font-windoor-secondary font-bold flex items-center'><img className='h-7 sm:h-9' src="/public/images/logo1.png" alt="Windoor" /></Link>
+            <Link to={'/'} className='text-xl sm:text-2xl font-windoor-secondary font-bold flex items-center'><img className='h-7 sm:h-9' src="/images/logo1.png" alt="Windoor" /></Link>
 
             {/* Desktop Links */}
             <div className='hidden md:flex items-center gap-6 text-[11px] lg:gap-8 tracking-widest text-windoor-text-muted'>
