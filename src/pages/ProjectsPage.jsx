@@ -1,5 +1,7 @@
 import { Link } from 'react-router'
 import Footer from '../components/Footer'
+import TextReveal from '../components/TextReveal'
+import ImageReveal from '../components/ImageReveal'
 
 const projects = [
     { id: 1, title: 'Villa Zenith', location: 'Ahmedabad, Gujarat', type: 'Residential', system: 'SLIMLINE SLIDER', finish: 'ANODIZED BLACK', year: '2023', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD_IC0U17ysGAzEVw3lPm7GrCRhZo5Ka6RqnWGpbRb3ORrnXLyyUAZwCLcfVLXCcVnonNsG8iRrE7eMa01khafPRAGRKU0yHGRFrc_kT--wTa414h5rX7dAKuAJAs9vZsnGVr6K2-HA7NKsQ2_82BDUq-_XzmeZYg4eBcU24YAiAJFp6ch79s-IhXwQM1IYHzSc6bm6jDdtKGD6Knb5jgHvNIc4ihYedQ-h3uC-VuPCbMx6OoQkDGUfitXZOs9nh4lNl-cQqk7sh0c', slug: 'villa-zenith' },
@@ -16,11 +18,19 @@ const ProjectsPage = () => {
             <header className="px-6 sm:px-16 max-w-360 mx-auto pt-20 sm:pt-32 lg:pt-40 mb-12 sm:mb-20">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
                     <div className="col-span-12 lg:col-span-8">
-                        <span className="font-windoor-main uppercase tracking-widest text-xs text-windoor-secondary mb-4 block">Portfolio</span>
-                        <h1 className="text-[26px] sm:text-4xl md:text-5xl lg:text-6xl font-bold font-windoor-main text-windoor-primary mb-6 sm:mb-8 leading-tight">Selected Architectural Works.</h1>
-                        <p className="text-base sm:text-lg text-windoor-secondary max-w-2xl">
-                            A curated showcase of precision engineering and aesthetic excellence. From private luxury villas in Ahmedabad to commercial landmarks across Gujarat, our glazing systems define the boundary between interior comfort and exterior grandeur.
-                        </p>
+                        <TextReveal mode="words">
+                            <span className="font-windoor-main uppercase tracking-widest text-xs text-windoor-secondary mb-4 block">Portfolio</span>
+                        </TextReveal>
+                        <h1 className="text-[26px] sm:text-4xl md:text-5xl lg:text-6xl font-bold font-windoor-main text-windoor-primary mb-6 sm:mb-8 leading-tight">
+                            <TextReveal mode="words" delay={0.2} speed={0.06}>
+                                Selected Architectural Works.
+                            </TextReveal>
+                        </h1>
+                        <TextReveal mode="block" delay={0.5}>
+                            <p className="text-base sm:text-lg text-windoor-secondary max-w-2xl leading-relaxed">
+                                A curated showcase of precision engineering and aesthetic excellence. From private luxury villas in Ahmedabad to commercial landmarks across Gujarat, our glazing systems define the boundary between interior comfort and exterior grandeur.
+                            </p>
+                        </TextReveal>
                     </div>
                     <div className="col-span-12 lg:col-span-4 flex items-end lg:justify-end">
                         <div className="flex flex-wrap gap-3 sm:gap-4">
@@ -36,15 +46,15 @@ const ProjectsPage = () => {
             <section className="px-6 sm:px-16 max-w-360 mx-auto pb-16 sm:pb-32">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-y-12 sm:gap-y-24 gap-x-8">
                     {projects.map((project, i) => (
-                        <article key={project.id} className={`group cursor-pointer ${i % 2 === 1 ? 'md:mt-20 lg:mt-32' : ''}`}>
+                        <article key={project.id} className={`group cursor-pointer premium-card p-4 border border-windoor-secondary/30 bg-white ${i % 2 === 1 ? 'md:mt-20 lg:mt-32' : ''}`} data-cursor="explore">
                             <div className="aspect-4/5 overflow-hidden bg-windoor-container mb-6 sm:mb-8 relative">
-                                <img alt={project.title} className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.02]" src={project.img} />
-                                <div className="absolute top-4 sm:top-6 left-4 sm:left-6">
+                                <ImageReveal src={project.img} alt={project.title} aspectClass="h-full w-full" delay={i * 0.1} />
+                                <div className="absolute top-6 left-6 z-10">
                                     <span className="bg-windoor-primary/90 text-white font-windoor-main text-xs px-3 sm:px-4 py-1 uppercase tracking-widest backdrop-blur-sm">{project.type}</span>
                                 </div>
                             </div>
 
-                            <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
+                            <div className="flex flex-col sm:flex-row justify-between items-start gap-4 bg-transparent">
                                 <div>
                                     <h2 className="text-lg sm:text-2xl font-windoor-main font-bold text-windoor-primary mb-2">{project.title}</h2>
                                     <p className="font-windoor-main text-xs text-windoor-secondary uppercase tracking-widest">⌖ {project.location}</p>
@@ -54,7 +64,7 @@ const ProjectsPage = () => {
                                 </Link>
                             </div>
 
-                            <div className="mt-4 sm:mt-6 font-windoor-main text-xs text-windoor-secondary grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 border-t border-windoor-secondary/20 pt-4 sm:pt-6">
+                            <div className="mt-4 sm:mt-6 font-windoor-main text-xs text-windoor-secondary grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 border-t border-windoor-secondary/20 pt-4 sm:pt-6 bg-transparent">
                                 <span>SYSTEM: {project.system}</span>
                                 <span>FINISH: {project.finish}</span>
                                 <span>YEAR: {project.year}</span>
@@ -73,14 +83,16 @@ const ProjectsPage = () => {
 
             {/* CTA Section */}
             <section className="bg-windoor-container-low border-y border-windoor-structural-grey/40 px-6 sm:px-16 py-16 sm:py-24 lg:py-32">
-                <div className="max-w-360 mx-auto text-center">
-                    <h2 className="text-xl sm:text-3xl md:text-4xl lg:text-6xl font-bold font-windoor-main text-windoor-primary mb-6 sm:mb-8">Ready to define your space?</h2>
-                    <p className="text-base sm:text-lg text-windoor-secondary mb-8 sm:mb-12 max-w-2xl mx-auto">Collaborate with our technical team to bring architectural precision to your next project.</p>
-                    <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6">
-                        <button className="btn font-windoor-main text-xs uppercase tracking-widest px-8 sm:px-10 py-4">Download Portfolio</button>
-                        <button className="border-2 border-windoor-primary text-windoor-primary font-windoor-main text-xs uppercase tracking-widest px-8 sm:px-10 py-4 hover:bg-windoor-primary hover:text-white transition-all">Technical Specs</button>
+                <TextReveal mode="block">
+                    <div className="max-w-360 mx-auto text-center">
+                        <h2 className="text-xl sm:text-3xl md:text-4xl lg:text-6xl font-bold font-windoor-main text-windoor-primary mb-6 sm:mb-8 uppercase">Ready to define your space?</h2>
+                        <p className="text-base sm:text-lg text-windoor-secondary mb-8 sm:mb-12 max-w-2xl mx-auto leading-relaxed">Collaborate with our technical team to bring architectural precision to your next project.</p>
+                        <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6">
+                            <button className="btn font-windoor-main text-xs uppercase tracking-widest px-8 sm:px-10 py-4">Download Portfolio</button>
+                            <button className="border-2 border-windoor-primary text-windoor-primary font-windoor-main text-xs uppercase tracking-widest px-8 sm:px-10 py-4 hover:bg-windoor-primary hover:text-white transition-all">Technical Specs</button>
+                        </div>
                     </div>
-                </div>
+                </TextReveal>
             </section>
 
             <Footer />

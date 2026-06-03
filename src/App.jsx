@@ -8,10 +8,14 @@ import ShowroomsPage from './pages/ShowroomsPage'
 import ContactPage from './pages/ContactPage'
 import Navbar from "./components/Navbar"
 import ScrollToTop from "./components/ScrollToTop"
+import CustomCursor from "./components/CustomCursor"
+import AmbientLayer from "./components/AmbientLayer"
 
 const App = () => {
     return (
         <>
+        <AmbientLayer/>
+        <CustomCursor/>
         <Navbar/>
         <ScrollToTop/>
         <Routes>
