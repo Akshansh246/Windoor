@@ -32,7 +32,7 @@ const Navbar = () => {
             <div className='hidden md:flex items-center gap-6 text-[11px] lg:gap-8 tracking-widest text-windoor-text-muted'>
                 <Link to='/' className={`transition-colors hover:text-windoor-primary ${isActive('/') ? 'border-b border-windoor-primary text-windoor-primary font-bold' : ''}`}>Home</Link>
                 <Link to='/about' className={`transition-colors hover:text-windoor-primary ${isActive('/about') ? 'border-b border-windoor-primary text-windoor-primary font-bold' : ''}`}>About</Link>
-                <Link to='/systems' className={`transition-colors hover:text-windoor-primary ${isActive('/systems') ? 'border-b border-windoor-primary text-windoor-primary font-bold' : ''}`}>Systems</Link>
+                <Link to='/products' className={`transition-colors hover:text-windoor-primary ${isActive('/products') ? 'border-b border-windoor-primary text-windoor-primary font-bold' : ''}`}>Products</Link>
                 <Link to='/projects' className={`transition-colors hover:text-windoor-primary ${isActive('/projects') ? 'border-b border-windoor-primary text-windoor-primary font-bold' : ''}`}>Projects</Link>
                 <Link to='/showrooms' className={`transition-colors hover:text-windoor-primary ${isActive('/showrooms') ? 'border-b border-windoor-primary text-windoor-primary font-bold' : ''}`}>Showrooms</Link>
                 <Link to='/contact' className={`transition-colors hover:text-windoor-primary ${isActive('/contact') ? 'border-b border-windoor-primary text-windoor-primary font-bold' : ''}`}>Contact</Link>
@@ -57,7 +57,7 @@ const Navbar = () => {
                 {[
                     { to: '/', label: 'Home' },
                     { to: '/about', label: 'About' },
-                    { to: '/systems', label: 'Systems' },
+                    { to: '/products', label: 'Products' },
                     { to: '/projects', label: 'Projects' },
                     { to: '/showrooms', label: 'Showrooms' },
                     { to: '/contact', label: 'Contact' },

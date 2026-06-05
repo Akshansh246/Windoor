@@ -4,28 +4,140 @@ import Footer from "../components/Footer"
 import TextReveal from "../components/TextReveal"
 import ImageReveal from "../components/ImageReveal"
 import Particles from "../components/Particles"
-import PinnedStorytelling from "../components/PinnedStorytelling"
+import { sliders, casements, ventilation } from "../data/productsData"
+import { projects } from "../data/projectData"
+import { showrooms } from "../data/showroomData"
+import { partners } from "../data/partnersData"
+
+const ProjectImageCarousel = ({ project, index }) => {
+    const images = Array.from(
+        new Set(
+            [
+                project.img,
+                project.heroImg,
+                project.gallery?.main?.img,
+                ...(project.gallery?.grid || []).map((g) => g.img),
+            ].filter(Boolean)
+        )
+    )
+
+    const [currentIdx, setCurrentIdx] = useState(0)
+
+    useEffect(() => {
+        if (images.length <= 1) return
+        const timer = setInterval(() => {
+            setCurrentIdx((prev) => (prev + 1) % images.length)
+        }, 3000 + index * 500)
+        return () => clearInterval(timer)
+    }, [images.length, index])
+
+    if (images.length === 0) return null
+
+    return (
+        <div className="relative w-full h-full">
+            {images.map((src, i) => (
+                <div
+                    key={src}
+                    className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+                        i === currentIdx ? "opacity-100 z-10" : "opacity-0 z-0"
+                    }`}
+                >
+                    <img
+                        src={src}
+                        alt={`${project.title} - view ${i + 1}`}
+                        className="w-full h-full object-cover transition-transform duration-[4000ms] ease-out group-hover:scale-105"
+                        loading="lazy"
+                    />
+                </div>
+            ))}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent z-15 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+            {images.length > 1 && (
+                <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-1.5 z-20 pointer-events-none">
+                    {images.map((_, i) => (
+                        <span
+                            key={i}
+                            className={`h-1 rounded-full transition-all duration-500 bg-white ${
+                                i === currentIdx ? "w-4 opacity-90" : "w-1.5 opacity-40"
+                            }`}
+                        />
+                    ))}
+                </div>
+            )}
+        </div>
+    )
+}
 
 const HomePage = () => {
-    const [counts, setCounts] = useState({ clients: 0, brands: 0, projects: 0, success: 0 })
+    const [counts, setCounts] = useState({ years: 0, villas: 0, projects: 0, tostem: 0 })
     const statsRef = useRef(null)
+    const partnerContainerRef = useRef(null)
+    const partnerTrackRef = useRef(null)
+    const targetTranslateX = useRef(0)
+    const currentTranslateX = useRef(0)
+    const animationFrameId = useRef(null)
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (!partnerContainerRef.current || !partnerTrackRef.current) return
+            const rect = partnerContainerRef.current.getBoundingClientRect()
+            const totalHeight = rect.height
+            const scrolledPast = -rect.top
+            const windowHeight = window.innerHeight
+            const scrollableRange = totalHeight - windowHeight
+
+            if (scrollableRange <= 0) {
+                targetTranslateX.current = 0
+                return
+            }
+
+            const progress = Math.min(Math.max(scrolledPast / scrollableRange, 0), 1)
+            const trackWidth = partnerTrackRef.current.scrollWidth
+            const viewWidth = window.innerWidth
+            const maxScroll = Math.max(trackWidth - viewWidth, 0)
+
+            targetTranslateX.current = progress * maxScroll
+        }
+
+        const updateAnimation = () => {
+            const lerpFactor = 0.08
+            currentTranslateX.current += (targetTranslateX.current - currentTranslateX.current) * lerpFactor
+            const currentX = Math.round(currentTranslateX.current * 100) / 100
+
+            if (partnerTrackRef.current) {
+                partnerTrackRef.current.style.transform = `translate3d(-${currentX}px, 0, 0)`
+            }
+
+            animationFrameId.current = requestAnimationFrame(updateAnimation)
+        }
+
+        window.addEventListener("scroll", handleScroll, { passive: true })
+        window.addEventListener("resize", handleScroll)
+        animationFrameId.current = requestAnimationFrame(updateAnimation)
+        handleScroll()
+
+        return () => {
+            window.removeEventListener("scroll", handleScroll)
+            window.removeEventListener("resize", handleScroll)
+            if (animationFrameId.current) cancelAnimationFrame(animationFrameId.current)
+        }
+    }, [])
 
     useEffect(() => {
         const section = statsRef.current
         if (!section) return
 
         const startCounting = () => {
-            const targets = { clients: 70000, brands: 20, projects: 100000, success: 35 }
+            const targets = { years: 35, villas: 200, projects: 100, tostem: 100 }
             const duration = 1500
             const startTime = performance.now()
 
             const animate = (timestamp) => {
                 const progress = Math.min((timestamp - startTime) / duration, 1)
                 setCounts({
-                    clients: Math.floor(targets.clients * progress),
-                    brands: Math.floor(targets.brands * progress),
+                    years: Math.floor(targets.years * progress),
+                    villas: Math.floor(targets.villas * progress),
                     projects: Math.floor(targets.projects * progress),
-                    success: Math.floor(targets.success * progress),
+                    tostem: Math.floor(targets.tostem * progress),
                 })
                 if (progress < 1) requestAnimationFrame(animate)
                 else setCounts(targets)
@@ -73,7 +185,7 @@ const HomePage = () => {
                         </TextReveal>
                     </div>
                     <div className="uppercase flex flex-wrap font-windoor-main text-xs gap-3 mt-4 sm:mt-7 tracking-widest">
-                        <Link className="btn px-5 py-3 sm:py-4" to="/systems">Explore Systems</Link>
+                        <Link className="btn px-5 py-3 sm:py-4" to="/products">Explore Products</Link>
                         <Link className="bg-windoor-background text-windoor-primary backdrop-blur-lg px-5 py-3 sm:py-4 border border-windoor-primary/50 hover:bg-windoor-primary hover:text-white transition-all" to="/projects">View Projects</Link>
                     </div>
                 </div>
@@ -105,88 +217,82 @@ const HomePage = () => {
                     <Link to={'/about'} className="uppercase font-bold font-windoor-main border-b-2 border-windoor-primary w-fit hover:opacity-70 transition-opacity">Read Our Story</Link>
                 </div>
                 <div className="w-full md:w-1/2 lg:w-1/3" data-cursor="view">
-                    <ImageReveal src="/images/about.png" alt="Windoor Architecture" aspectClass="aspect-4/5" />
+                    <ImageReveal src="/images/about.jpeg" alt="Windoor Architecture" aspectClass="aspect-4/5" />
                 </div>
             </div>
 
             {/* ── Stats ─────────────────────────────────────────────────── */}
             <div ref={statsRef} className="w-full py-12 sm:py-16 px-4 sm:px-8">
                 <TextReveal mode="block">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-360 mx-auto uppercase font-windoor-main">
-                        <div className="text-center py-5 px-4">
-                            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold">{counts.success.toLocaleString()}+</h2>
-                            <p className="text-xs font-windoor-main text-windoor-text-muted mt-2">Years of success</p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 max-w-360 mx-auto uppercase font-windoor-main">
+                        <div className="text-center py-6 px-4 border border-windoor-secondary/20 bg-windoor-container-low/40 premium-card">
+                            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-windoor-primary">{counts.years}+</h2>
+                            <p className="text-[10px] sm:text-xs font-windoor-main text-windoor-text-muted mt-2 tracking-wider">Years of Expertise</p>
                         </div>
-                        <div className="text-center py-5 px-4">
-                            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold">{counts.clients.toLocaleString()}+</h2>
-                            <p className="text-xs font-windoor-main text-windoor-text-muted mt-2">Satisfied Clients</p>
+                        <div className="text-center py-6 px-4 border border-windoor-secondary/20 bg-windoor-container-low/40 premium-card">
+                            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-windoor-primary">{counts.villas}+</h2>
+                            <p className="text-[10px] sm:text-xs font-windoor-main text-windoor-text-muted mt-2 tracking-wider">Premium Villas Delivered</p>
                         </div>
-                        <div className="text-center py-5 px-4">
-                            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold">{counts.brands.toLocaleString()}+</h2>
-                            <p className="text-xs font-windoor-main text-windoor-text-muted mt-2">Well-known Brands</p>
+                        <div className="text-center py-6 px-4 border border-windoor-secondary/20 bg-windoor-container-low/40 premium-card">
+                            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-windoor-primary">{counts.projects}+</h2>
+                            <p className="text-[10px] sm:text-xs font-windoor-main text-windoor-text-muted mt-2 tracking-wider">Landmark Projects</p>
                         </div>
-                        <div className="text-center py-5 px-4">
-                            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold">{counts.projects.toLocaleString()}+</h2>
-                            <p className="text-xs font-windoor-main text-windoor-text-muted mt-2">Projects Completed</p>
+                        <div className="text-center py-6 px-4 border border-windoor-secondary/20 bg-windoor-container-low/40 premium-card">
+                            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-windoor-primary">{counts.tostem}-Yr</h2>
+                            <p className="text-[10px] sm:text-xs font-windoor-main text-windoor-text-muted mt-2 tracking-wider">TOSTEM Japanese Leader</p>
                         </div>
                     </div>
                 </TextReveal>
             </div>
 
             {/* ── Collaborations ────────────────────────────────────────── */}
-            <div className="bg-windoor-container-low w-full flex flex-col gap-8 sm:gap-10 px-6 sm:px-16 py-16 items-center">
-                <div className="w-full max-w-360 mx-auto">
-                    <TextReveal mode="words">
-                        <p className="tracking-[3px] font-windoor-main uppercase text-xs text-windoor-text-muted mb-2">Collaborations</p>
-                    </TextReveal>
-                    <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold font-windoor-main tracking-tight">
-                        <TextReveal mode="words" delay={0.2} speed={0.06}>
-                            WORLD-CLASS PARTNERS
+            <div ref={partnerContainerRef} className="relative h-[250vh] w-full bg-windoor-container-low">
+                <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center py-8 sm:py-12">
+                    <div className="w-full max-w-360 mx-auto px-6 sm:px-16 mb-8 sm:mb-12">
+                        <TextReveal mode="words">
+                            <p className="tracking-[3px] font-windoor-main uppercase text-xs text-windoor-text-muted mb-2">Collaborations</p>
                         </TextReveal>
-                    </h2>
-                </div>
-                <div className="w-full max-w-360 mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {/* Tostem */}
-                    <div className="border border-windoor-secondary group cursor-pointer overflow-hidden bg-white premium-card" data-cursor="explore">
-                        <div className="h-56 sm:h-72 w-full overflow-hidden relative">
-                            <ImageReveal src="/images/tostem.jpg" alt="tostem" aspectClass="h-full w-full" />
-                        </div>
-                        <div className="p-6 sm:p-10 flex flex-col gap-4 items-start bg-transparent">
-                            <div className="font-windoor-main flex justify-between w-full items-start">
-                                <div>
-                                    <h4 className="text-lg sm:text-xl font-bold">TOSTEM</h4>
-                                    <p className="uppercase text-xs text-windoor-text-muted">Japanese Pre-engineered systems</p>
-                                </div>
-                                <span className="text-windoor-primary text-lg transition-transform group-hover:translate-x-1 group-hover:-translate-y-1 duration-300">↗</span>
-                            </div>
-                            <p className="text-sm text-windoor-text-muted">Industry-leading aluminum window systems focused on durability and ease of installation</p>
-                            <Link to={'/about'} className="border border-windoor-primary px-5 py-2 uppercase font-windoor-main text-xs sm:text-sm cursor-pointer mt-3 hover:bg-windoor-primary hover:text-white transition-all duration-300">Learn More</Link>
-                        </div>
+                        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold font-windoor-main tracking-tight">
+                            <TextReveal mode="words" delay={0.2} speed={0.06}>
+                                WORLD-CLASS PARTNERS
+                            </TextReveal>
+                        </h2>
                     </div>
-                    {/* Keller */}
-                    <div className="border border-windoor-secondary group cursor-pointer overflow-hidden bg-white premium-card" data-cursor="explore">
-                        <div className="h-56 sm:h-72 w-full overflow-hidden relative">
-                            <ImageReveal src="/images/kellar.png" alt="keller" aspectClass="h-full w-full" />
-                        </div>
-                        <div className="p-6 sm:p-10 flex flex-col gap-4 items-start bg-transparent">
-                            <div className="font-windoor-main flex justify-between w-full items-start">
-                                <div>
-                                    <h4 className="text-lg sm:text-xl font-bold">KELLER</h4>
-                                    <p className="uppercase text-xs text-windoor-text-muted">European Minimal Windows</p>
+                    <div className="w-full overflow-visible">
+                        <div 
+                            ref={partnerTrackRef} 
+                            className="flex gap-6 sm:gap-8 px-6 sm:px-16 w-fit will-change-transform animate-ease-out"
+                            style={{ transform: 'translate3d(0px, 0, 0)' }}
+                        >
+                            {partners.map((partner, index) => (
+                                <div 
+                                    key={index} 
+                                    className="w-[80vw] sm:w-[45vw] md:w-[40vw] lg:w-[32vw] max-w-[480px] flex-shrink-0 border border-windoor-secondary group cursor-pointer overflow-hidden bg-white premium-card" 
+                                    data-cursor="explore"
+                                >
+                                    <div className="h-56 sm:h-72 w-full overflow-hidden relative">
+                                        <ImageReveal src={partner.img} alt={partner.title.toLowerCase()} aspectClass="h-full w-full" />
+                                    </div>
+                                    <div className="p-6 sm:p-10 flex flex-col gap-4 items-start bg-transparent">
+                                        <div className="font-windoor-main flex justify-between w-full items-start">
+                                            <div>
+                                                <h4 className="text-lg sm:text-xl font-bold uppercase">{partner.title}</h4>
+                                                <p className="uppercase text-xs text-windoor-text-muted">{partner.subtitle}</p>
+                                            </div>
+                                            <span className="text-windoor-primary text-lg transition-transform group-hover:translate-x-1 group-hover:-translate-y-1 duration-300">↗</span>
+                                        </div>
+                                        <p className="text-sm text-windoor-text-muted">{partner.desc}</p>
+                                        <Link to={partner.link} className="border border-windoor-primary px-5 py-2 uppercase font-windoor-main text-xs sm:text-sm cursor-pointer mt-3 hover:bg-windoor-primary hover:text-white transition-all duration-300">Learn More</Link>
+                                    </div>
                                 </div>
-                                <span className="text-windoor-primary text-lg transition-transform group-hover:translate-x-1 group-hover:-translate-y-1 duration-300">↗</span>
-                            </div>
-                            <p className="text-sm text-windoor-text-muted">Ultra-premium minimal window solutions that redefine modern luxury with limitless views.</p>
-                            <Link to={'/about'} className="border border-windoor-primary px-5 py-2 uppercase font-windoor-main text-xs sm:text-sm cursor-pointer mt-3 hover:bg-windoor-primary hover:text-white transition-all duration-300">Learn More</Link>
+                            ))}
                         </div>
                     </div>
                 </div>
             </div>
 
-            {/* ── Facade and Curtain Wall Systems (Pinned Storytelling) ── */}
-            <PinnedStorytelling />
+            
 
-            {/* ── Architectural Systems ──────────────────────────────────── */}
             {/* ── Architectural Systems ──────────────────────────────────── */}
             <section className="py-20 sm:py-32 md:py-40 bg-windoor-background">
                 <div className="px-6 sm:px-16 max-w-360 mx-auto">
@@ -196,32 +302,58 @@ const HomePage = () => {
                         </TextReveal>
                         <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold font-windoor-main tracking-tight">
                             <TextReveal mode="words" delay={0.2} speed={0.06}>
-                                ARCHITECTURAL SYSTEMS
+                                ARCHITECTURAL PRODUCTS
                             </TextReveal>
                         </h2>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                         {[
-                            { title: 'Sliding Systems', desc: 'High-performance sliding doors with ultra-slim sightlines and seamless movement.', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD91InVLeazmJB577uQUjnlWR0Ft--njs3ANVdWN1WPPZScrhTqYPTzIuMxsNK1ohj6WVig4VqZO4kdAYkPJiyG7rX2EcmpCLLTyyl7a7MbCVMsmweLo8lzOQniiL-SL4Oa3BQZf2Oguy7uNxBY3ZvLPAdaaAd8bTi3WAXjTVsu_g2rWs1yDCivTOER_V5rF_FxnB4XcSiRSUKNovb_iqmOLj1RZ5gOK0_PpoCcaHRWztSFX7jVIS-77_z93jpHtKzlAYLqvrwZbq8' },
-                            { title: 'Casement Series', desc: 'Classic functionality met with contemporary design, providing maximum ventilation.', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB_BbkJ1nCaeFSI077hMPs0N-a0-eqxHK0MHcN4SNDaRxjnIWoHYdnkUxFuLvxYoI52qDBuUi4OQ85rdN30ovNhSunmgg8ecwi3WD8O6vVPfnAMsCp5qW66t0spNDOnLEHY2J7Nq22BSatYPopkURmv3Gfwz5EanzYZaya9Y0rraRfE7YCNjRirr0Mz3VtdbJMiILNGVQE2jipcrlRQDKJ-1zRkCHzl6rayDA8paPzkuCbCJ3ztP7k63VeBV4SRbAp1oto73_GrRMw' },
-                            { title: 'Minimal Systems', desc: 'The art of invisibility. Large format glass with barely visible framing.', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAP-iQijtD_dpcrnPj87xHRUig2K-QaiKDp9gxJR6ygkNnEGZ_IcOTjHsvoC7emsp6bdrRPV1UJVaFVsomQBWl7oJjukEB2DU6ZAnCqx6gaWL_6-ZjPFlBlvbQ82H_B0ZtX2cUUqqpgLW2fxYdv1nlImBuzswLvFMAd3fD4Dl-BhMS61QIsShrVwJ3wiAjuFOO8ECOS15kydh23KnTJvM0hnsHlioGKrt7bCFm-6hx-BuMxiML81QJHOYzseT7T-c_x2ElioHu9dAs' },
-                            { title: 'Motorized NGS', desc: 'Effortless automation for heavy-duty glazed walls at the touch of a button.', icon: '⚙' },
-                            { title: 'Curtain Walls', desc: 'Non-structural outer walls providing maximum light and sophisticated aesthetics.', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCIgizOrbLX98JT4NypS0HgqfYIWrdk4mma-PNKBcrZBBsbw_g2zJzPgv1y5nRPBtlcG9JHcS-Fxz6Vr6sJljno21MaGPmA34osWxp9rCkRCbg52hd_eHFwuwaA3oqXYZXGV89KiR236iGXcAMZm_quyrACiDzOpQBZdf1Z0eQZl4GjzFVE9tFztXnnvFBAoYyB1nDD7lXORh3a2swIK5AAZcM63XllzcHKZ8w7Rcco27Jj7IBr9Xh1v9LT9YGAc2-DFp3cIW8HGAo' },
-                            { title: 'Ventilation', desc: 'Integrated airflow solutions including louvres and automated parallel openers.', icon: '💨' },
-                        ].map((sys, idx) => (
-                            <div key={sys.title} className="group border border-windoor-secondary bg-windoor-container-low p-6 sm:p-8 flex flex-col justify-between min-h-95 sm:min-h-112.5 premium-card" data-cursor="explore">
+                            {
+                                title: sliders[3]?.title || "Motorised & Minimal System",
+                                desc: sliders[3]?.desc || "State-of-the-art motorized sliding systems with ultra-slim 20mm visual sightlines.",
+                                img: sliders[3]?.images?.[0]?.src || "https://lh3.googleusercontent.com/aida-public/AB6AXuD_IC0U17ysGAzEVw3lPm7GrCRhZo5Ka6RqnWGpbRb3ORrnXLyyUAZwCLcfVLXCcVnonNsG8iRrE7eMa01khafPRAGRKU0yHGRFrc_kT--wTa414h5rX7dAKuAJAs9vZsnGVr6K2-HA7NKsQ2_82BDUq-_XzmeZYg4eBcU24YAiAJFp6ch79s-IhXwQM1IYHzSc6bm6jDdtKGD6Knb5jgHvNIc4ihYedQ-h3uC-VuPCbMx6OoQkDGUfitXZOs9nh4lNl-cQqk7sh0c",
+                                link: "/products#sliders"
+                            },
+                            {
+                                title: casements[3]?.title || "Minimal Casements",
+                                desc: casements[3]?.desc || "Concealed hinges and micro-frames designed to frame exterior landscapes seamlessly.",
+                                img: casements[3]?.images?.[0]?.src || "https://lh3.googleusercontent.com/aida-public/AB6AXuBKge9VRB473RWyzVVtPQtvHb0CwRZgYroHxoIx6HoU8ZVpeViTduE0eKc-uOL6gud8IGCkvEpS7ik-RPfqUIgfz4AvmuS85K_G0fx9yer6rh_u1gXLLqaR5tKsLX9NiA6oScZVPtmDu1eOcqlkTsbl0VEJa6NJw9nCdnldpAtYZwJ5zZCKHEZwpXucxfJu3rHpzn_0XuyQ4XgYAbvfER0MhgkvZ3OH8Q9kzPmPDddbiibpp0zoZ-7rentBAACcpkjG8j0B-ARVxy4",
+                                link: "/products#casements"
+                            },
+                            {
+                                title: sliders[1]?.title || "DGU System",
+                                desc: sliders[1]?.desc || "Double Glazed Units built with advanced thermal profiles to maximize insulation.",
+                                img: sliders[1]?.images?.[0]?.src || "https://lh3.googleusercontent.com/aida-public/AB6AXuDp3Q_mA_D4q0JmJmecWpU43GZbV_Ay_C9acZtoHmRY_AdrbKVqQQRJSudT1JRpDI050fHbbKbzOwKo7TmNlPRc7gkJ4JyQKlJ1cOlkQEr9Nd6wsMNewTlMMSsj1Phr3kkdpCjhvtXIsYflQIz5Vl48lyTvl_o9TGKZfigvfRKQAtT8SzSXAq4SbDI8W9_nSwemeasmLRji3phO-N43_auermZ1DIG9aBLZvYWhULM0ph0sXccFeskg4DCst6gnEfD8h0Qmuv0khz0",
+                                link: "/products#sliders"
+                            },
+                            {
+                                title: casements[2]?.title || "Grants Casements",
+                                desc: casements[2]?.desc || "Luxury large-span casement systems featuring hidden friction stays and perimeter seals.",
+                                img: casements[2]?.images?.[0]?.src || "https://lh3.googleusercontent.com/aida-public/AB6AXuCpK32tqoZqhdzrsHmhmR5tpKJLm8oI8fQ-cxxm0-nfs468_5dPTXR-Jso0DPv4uGfpvXkdO41Gkcz_DE38kL6AYTN6n5FeW_DgbZz1BzUXf-7USGDL3CpgD0aV5seJ3Hq7q8QulmmdDlaTGhbYb-1MeWZ0F2X9TJIpUE8AO0AZl2BUB47sQ683yINhBU72VyZIyJBJoC_jmzWWRCVAqvoe_nYcBZShxQiXF822qJ89QC5FfgsVtC-F5wUfD3_B3V6woX49DfW7ddI",
+                                link: "/products#casements"
+                            },
+                            {
+                                title: sliders[4]?.title || "Curved Sliding System",
+                                desc: sliders[4]?.desc || "Bespoke curved tracks that align with custom architectural radiuses without sacrificing smooth operation.",
+                                img: sliders[4]?.images?.[0]?.src || "https://lh3.googleusercontent.com/aida-public/AB6AXuBmpxckI9kpMmbOPOp_npxGtwKzNiW6FTykynnKN1gJB_R4YUjU_fac1-OdtuHb3rpbeWCdaLoDyPSOsv4ZDm0Al0qRGzdqFBhaumCOP-X0O9EE_o6PGcDq21_3oPyae4nimCmpRhe498ExvAvkTWVv9_JjMLU4pIgE00cqz3UFN7pd9VMwAPKZmPa46VU4xvoOSFIUtMGbDY7jnXz5GWiFKccte6p-5IXtNgMX9gr3Oq-sLh2CG1ZTwk2bU7T82hCojo9_WVUjkcA",
+                                link: "/products#sliders"
+                            },
+                            {
+                                title: ventilation.title || "Ventilation Options",
+                                desc: ventilation.desc || "Acoustically buffered ventilation slots and micro-vents designed to bring natural air circulation.",
+                                img: ventilation.images?.[0]?.src || "/images/facade.png",
+                                link: "/products#ventilation"
+                            }
+                        ].map((prod, idx) => (
+                            <div key={prod.title} className="group border border-windoor-secondary bg-windoor-container-low p-6 sm:p-8 flex flex-col justify-between min-h-95 sm:min-h-112.5 premium-card" data-cursor="explore">
                                 <div className="space-y-4 sm:space-y-6">
                                     <div className="aspect-square bg-windoor-container overflow-hidden flex items-center justify-center relative">
-                                        {sys.img ? (
-                                            <ImageReveal src={sys.img} alt={sys.title} aspectClass="w-full h-full" delay={idx * 0.05} />
-                                        ) : (
-                                            <span className="text-5xl opacity-20">{sys.icon}</span>
-                                        )}
+                                        <ImageReveal src={prod.img} alt={prod.title} aspectClass="w-full h-full" delay={idx * 0.05} />
                                     </div>
-                                    <h4 className="font-windoor-main text-base sm:text-xl font-bold uppercase">{sys.title}</h4>
-                                    <p className="text-sm text-windoor-text-muted leading-relaxed">{sys.desc}</p>
+                                    <h4 className="font-windoor-main text-base sm:text-xl font-bold uppercase">{prod.title}</h4>
+                                    <p className="text-sm text-windoor-text-muted leading-relaxed">{prod.desc}</p>
                                 </div>
-                                <Link to="/systems" className="mt-6 self-start font-windoor-main text-xs uppercase tracking-widest font-bold border-b border-windoor-primary pb-1 group-hover:pr-4 transition-all duration-300">Explore</Link>
+                                <Link to={prod.link} className="mt-6 self-start font-windoor-main text-xs uppercase tracking-widest font-bold border-b border-windoor-primary pb-1 group-hover:pr-4 transition-all duration-300">Explore</Link>
                             </div>
                         ))}
                     </div>
@@ -245,17 +377,13 @@ const HomePage = () => {
                         <Link to="/projects" className="font-windoor-main text-xs uppercase tracking-widest border-b border-windoor-primary pb-1 hover:opacity-70 transition-opacity shrink-0">View All Projects</Link>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 sm:gap-10">
-                        {[
-                            { title: 'The Glass Pavilion', sub: 'Ahmedabad | Private Villa', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDMAaRrV5-NfVbQu9waPHuLoPb3S3wNhBwRTwrrTQEB6jK6Kq7IXk8D6NuslY6ut5WPos9j_T1qBBiHJ1CFyLRvUr-stYJ5niJOr6hQm5Mf5pg7aYApHLCzucbRPwM80hl9ZctOTvlf6m4XWF6E53S-96hSC0p5_G3hxitZG0vF_KFyxarDctWTvcLQYFrro83d0ax08tlQNz4iVFkZOWexigmsLqDUpjwAzjLOdRBLGaKE9LQIxaGJaUvaGtefbr3OBuFNrq6wnfU' },
-                            { title: 'Monolith Residence', sub: 'Rajkot | Luxury Estate', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDpVaFEO7FeYSIwdm8Cjul0ezfCw0I7y7C7kdp_fTd721CLDNip0fkqhzJabK3CI2pwN17ccyJbkGwgRCqWaLLQH-aenuv34piSvmludrWlcV9w3CGJJZpsWpDT-UO9AhLJieECToKM4inASfCIKzD3Z9wITeM6JzMJ7IqgrNXx0JWvVf8WQweYjol0OZNEbYVyKxro2PwlCpVV3Wt8bR4U0mG404T9MUZiHPk4gHtp4ijJYGRa3Lx9WQ2GpX-KqmeTjrh-jFPenJk' },
-                            { title: 'Corporate Atrium', sub: 'Anand | Headquarters', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCIgizOrbLX98JT4NypS0HgqfYIWrdk4mma-PNKBcrZBBsbw_g2zJzPgv1y5nRPBtlcG9JHcS-Fxz6Vr6sJljno21MaGPmA34osWxp9rCkRCbg52hd_eHFwuwaA3oqXYZXGV89KiR236iGXcAMZm_quyrACiDzOpQBZdf1Z0eQZl4GjzFVE9tFztXnnvFBAoYyB1nDD7lXORh3a2swIK5AAZcM63XllzcHKZ8w7Rcco27Jj7IBr9Xh1v9LT9YGAc2-DFp3cIW8HGAo' },
-                        ].map((p, idx) => (
-                            <Link key={p.title} to="/projects" className="group cursor-pointer block" data-cursor="explore">
+                        {projects.slice(0, 3).map((p, idx) => (
+                            <Link key={p.id} to={`/projects/${p.slug}`} className="group cursor-pointer block" data-cursor="explore">
                                 <div className="aspect-3/4 overflow-hidden border border-windoor-secondary mb-6 sm:mb-8 relative">
-                                    <ImageReveal src={p.img} alt={p.title} aspectClass="h-full w-full" delay={idx * 0.1} />
+                                    <ProjectImageCarousel project={p} index={idx} />
                                 </div>
                                 <h4 className="font-windoor-main text-base sm:text-xl font-bold uppercase">{p.title}</h4>
-                                <p className="font-windoor-main text-xs uppercase text-windoor-secondary tracking-widest mt-2">{p.sub}</p>
+                                <p className="font-windoor-main text-xs uppercase text-windoor-secondary tracking-widest mt-2">{p.location} | {p.type}</p>
                             </Link>
                         ))}
                     </div>
@@ -271,18 +399,13 @@ const HomePage = () => {
                         </TextReveal>
                         <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold font-windoor-main tracking-tight">
                             <TextReveal mode="words" delay={0.2} speed={0.06}>
-                                EXPERIENCE OUR SYSTEMS
+                                EXPERIENCE OUR PRODUCTS
                             </TextReveal>
                         </h2>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-                        {[
-                            { city: 'Ahmedabad', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCEPFnTqa_OOR102FOpU4Wqy2PgTduwK2RaSmBqAbBAVuwARfhmnsvgpqLLV4_FCEzVStmZloWVJKlw8ZPfl9ExyB-NsGl52YUrflM21peRaS3LNuormwT-F9T9Zh-2ltsTfXVYbZmrBonnJo8A4PjnmlbyZPRtNOc2JDMMpYJD0q5Z3UX9ZQqyQYzReWMKGPij-yj2mwrRhA8_OQFC95LcYA0vFSV6FDBxZLa7O7EL7LB42U4rZfx0K8s2DMu2CQHWYy3VC8yZnqE' },
-                            { city: 'Rajkot', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBmnxTXf8xtY634yRxDI-ns0tW2gsz2yNqhV-0LKga4bxUxNOAac2SVH0xigZezr-_g29zgTUCI6zqZmkrX_S52Bjfev5QIHnR99zkFTtcQOec4by1-LpD0foDasxyuyVxGFG18r4GuNMeLArFXFeSZET4VKILUNOCfq6zqcXa2YxgYKHqWbT5BHvqns3ADAavDJOJHPQKKctnrW3jLjeSpPgW1UYJp6nbKzmYIaG2OYs-aJBaOhFJhgzKjT7Hiv5zwZqRBClCkHfQ' },
-                            { city: 'Anand', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD0Y2CfMOMeaZqjfo9iuWXdeO8VpFBPIlEA_7_j5B4eiSCNquyA12Ovd17a9WwojTWxquhMD0xWmiw9P1L2quSO45cVx6_uTMFuDGM2acLJyRAWc4y7abUIj-ReJA7s1g6KTKI-Gmgrw3p7HuED_q9lS-ARMFUWYF8jL5ShjCwkXmC6ARuzuqhr26YTy6vox5tYanUWvq_n04eEzVbRJjxOsoe4RAET5rLx3ZutYWfvQYtsBm3gtzvVjnbEJJJreromDdYDq3nUQfk' },
-                            { city: 'Mehsana', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD8NKL7betIuWjVeyXlk4R6kw9HxmdqBTrcrHLoyS1GSb_5lNYjyROFKUMz_Ic-vw3_Ve6_NS0HUyGfoa-oEVWmWDXLZhNfsCnwsmFgulmfK6pZ_MRpcNUAtgyMd5Pui__jUAxUABVjYKnEIoKm9MztRJoX7L_dvwdLEfiOUcs3PNODxArES1wvuci1HZEM0QXk8FvonL-ZNBzTW8iAhbXFfHIngkFi16P8HpTESGFUCvdHOdTGg6EBhACe8FbkCHNVOfykVebT-2M' },
-                        ].map((room, idx) => (
-                            <Link key={room.city} to="/showrooms" className="group cursor-pointer space-y-4 block" data-cursor="view">
+                        {showrooms.map((room, idx) => (
+                            <Link key={room.id} to="/showrooms" className="group cursor-pointer space-y-4 block" data-cursor="view">
                                 <div className="aspect-video bg-windoor-container overflow-hidden border border-windoor-secondary relative">
                                     <ImageReveal src={room.img} alt={`${room.city} Showroom`} aspectClass="h-full w-full" delay={idx * 0.08} />
                                 </div>

@@ -2,6 +2,7 @@ import { Link } from 'react-router'
 import Footer from '../components/Footer'
 import TextReveal from '../components/TextReveal'
 import ImageReveal from '../components/ImageReveal'
+import { brands } from '../data/partnersData'
 
 const AboutPage = () => {
     return (
@@ -151,14 +152,11 @@ const AboutPage = () => {
                         </h2>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-16">
-                        {[
-                            { name: 'TOSTEM', style: '', desc: "TOSTEM is one of the world’s most respected names in premium aluminium windows and doors. With over 100 years of Japanese engineering philosophy and more than five decades of innovation in fenestration technology, TOSTEM is renowned for creating pre-engineered window systems that combine precision, durability, aesthetics, and performance. Designed to withstand extreme climates while maximizing natural light and ventilation, TOSTEM products are celebrated for their exceptional quality control, factory-finished precision, superior weather resistance, and minimalist modern design. What truly sets TOSTEM apart is its “Made in Japan” engineering approach — where every detail is thoughtfully designed to deliver long-lasting performance, effortless functionality, and a seamless connection between living spaces and nature. Currently Tostem is working across 175 cities in India. The pinnacle of European minimal windows. Keller systems offer the world's slimmest frames, providing an uninterrupted panoramic view for luxury estates.", link: 'Explore Tostem Series' },
-                            { name: 'KELLER', style: 'italic', desc: "Keller Minimal Windows represents the finest expression of minimal architectural design — where precision engineering meets timeless elegance. Designed for the world's most luxurious spaces, Keller creates seamless living experiences through ultra-slim glass systems that dissolve the boundary between indoors and outdoors. Defined by remarkably slender 21 mm sightlines and engineered to support glass panels up to 6 meters high, each Keller system combines invisible performance with refined aesthetics. Hidden tracks, silent motorisation, and seamless pocket systems allow entire walls of glass to disappear effortlessly, creating uninterrupted panoramic views and open living spaces. Every Keller installation is bespoke, engineered with exceptional precision and attention to detail. Capable of moving glass panels weighing up to 2,400 kg with effortless smoothness, Keller Minimal Windows sets the benchmark for innovation, sophistication, and contemporary luxury architecture worldwide", link: 'Explore Keller Minimal' },
-                        ].map((brand) => (
+                        {brands.map((brand) => (
                             <div key={brand.name} className="border border-windoor-secondary p-8 sm:p-16 flex flex-col items-center text-center bg-windoor-charcoal/20 premium-card" data-cursor="explore">
                                 <div className={`text-2xl sm:text-4xl font-bold tracking-tighter mb-6 sm:mb-8 uppercase font-windoor-main ${brand.style}`}>{brand.name}</div>
                                 <p className="text-sm text-windoor-structural-grey mb-6 sm:mb-8 leading-relaxed">{brand.desc}</p>
-                                <a className="font-windoor-main text-xs uppercase tracking-widest border-b border-white pb-1 hover:text-windoor-secondary transition-colors" href="#">{brand.link}</a>
+                                <Link className="font-windoor-main text-xs uppercase tracking-widest border-b border-white pb-1 hover:text-windoor-secondary transition-colors" to="/products">{brand.link}</Link>
                             </div>
                         ))}
                     </div>
@@ -173,8 +171,8 @@ const AboutPage = () => {
                     </TextReveal>
                 </h2>
                 <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center">
-                    <Link to="/contact" className="btn font-windoor-main text-xs px-8 sm:px-10 py-4 sm:py-5 uppercase tracking-widest">Request a Consultation</Link>
-                    <button className="border-2 border-windoor-primary text-windoor-primary font-windoor-main text-xs px-8 sm:px-10 py-4 sm:py-5 uppercase tracking-widest hover:bg-windoor-primary hover:text-white transition-all">Download Catalog</button>
+                    <Link to="/contact" className="btn font-windoor-main text-xs px-8 sm:px-10 py-4 sm:py-5 uppercase tracking-widest text-center flex items-center justify-center">Request a Consultation</Link>
+                    <Link to="/products" className="border-2 border-windoor-primary text-windoor-primary font-windoor-main text-xs px-8 sm:px-10 py-4 sm:py-5 uppercase tracking-widest hover:bg-windoor-primary hover:text-white transition-all text-center flex items-center justify-center">Explore Products</Link>
                 </div>
             </section>
 

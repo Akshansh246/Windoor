@@ -50,7 +50,7 @@ const CustomCursor = () => {
     let animationFrameId;
     const updateCursor = () => {
       // Lerp coefficient for delay (e.g. 0.15 for smooth lag)
-      const lerpFactor = 0.15;
+      const lerpFactor = 1;
       cursorPos.current.x += (mousePos.current.x - cursorPos.current.x) * lerpFactor;
       cursorPos.current.y += (mousePos.current.y - cursorPos.current.y) * lerpFactor;
 
@@ -92,7 +92,7 @@ const CustomCursor = () => {
   return (
     <div
       ref={cursorRef}
-      className={`fixed top-0 left-0 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none z-9999 transition-all duration-300 ease-out flex items-center justify-center ${sizeClass}`}
+      className={`fixed top-0 left-0 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none z-9999 custom-cursor flex items-center justify-center ${sizeClass}`}
       style={{
         transform: 'translate3d(0px, 0px, 0)',
         willChange: 'transform',
