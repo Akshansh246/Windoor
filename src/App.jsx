@@ -11,14 +11,12 @@ import TermsPage from './pages/TermsPage'
 import NotFoundPage from './pages/NotFoundPage'
 import Navbar from "./components/Navbar"
 import ScrollToTop from "./components/ScrollToTop"
-import CustomCursor from "./components/CustomCursor"
 import AmbientLayer from "./components/AmbientLayer"
 
 const App = () => {
     return (
         <>
         <AmbientLayer/>
-        <CustomCursor/>
         <Navbar/>
         <ScrollToTop/>
         <Routes>

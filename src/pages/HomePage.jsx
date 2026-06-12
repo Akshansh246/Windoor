@@ -70,57 +70,69 @@ const ProjectImageCarousel = ({ project, index }) => {
 const HomePage = () => {
     const [counts, setCounts] = useState({ years: 0, villas: 0, projects: 0, tostem: 0 })
     const statsRef = useRef(null)
-    const partnerContainerRef = useRef(null)
     const partnerTrackRef = useRef(null)
-    const targetTranslateX = useRef(0)
-    const currentTranslateX = useRef(0)
-    const animationFrameId = useRef(null)
+    const [isHovered, setIsHovered] = useState(false)
+    const [canScrollLeft, setCanScrollLeft] = useState(false)
+    const [canScrollRight, setCanScrollRight] = useState(true)
+
+    const updateScrollButtons = () => {
+        const container = partnerTrackRef.current
+        if (!container) return
+        setCanScrollLeft(container.scrollLeft > 5)
+        setCanScrollRight(container.scrollLeft + container.clientWidth < container.scrollWidth - 5)
+    }
 
     useEffect(() => {
+        const container = partnerTrackRef.current
+        if (!container) return
+
+        updateScrollButtons()
+
         const handleScroll = () => {
-            if (!partnerContainerRef.current || !partnerTrackRef.current) return
-            const rect = partnerContainerRef.current.getBoundingClientRect()
-            const totalHeight = rect.height
-            const scrolledPast = -rect.top
-            const windowHeight = window.innerHeight
-            const scrollableRange = totalHeight - windowHeight
-
-            if (scrollableRange <= 0) {
-                targetTranslateX.current = 0
-                return
-            }
-
-            const progress = Math.min(Math.max(scrolledPast / scrollableRange, 0), 1)
-            const trackWidth = partnerTrackRef.current.scrollWidth
-            const viewWidth = window.innerWidth
-            const maxScroll = Math.max(trackWidth - viewWidth, 0)
-
-            targetTranslateX.current = progress * maxScroll
+            updateScrollButtons()
         }
 
-        const updateAnimation = () => {
-            const lerpFactor = 0.08
-            currentTranslateX.current += (targetTranslateX.current - currentTranslateX.current) * lerpFactor
-            const currentX = Math.round(currentTranslateX.current * 100) / 100
+        container.addEventListener("scroll", handleScroll, { passive: true })
+        window.addEventListener("resize", updateScrollButtons)
 
-            if (partnerTrackRef.current) {
-                partnerTrackRef.current.style.transform = `translate3d(-${currentX}px, 0, 0)`
-            }
-
-            animationFrameId.current = requestAnimationFrame(updateAnimation)
-        }
-
-        window.addEventListener("scroll", handleScroll, { passive: true })
-        window.addEventListener("resize", handleScroll)
-        animationFrameId.current = requestAnimationFrame(updateAnimation)
-        handleScroll()
+        // Delay updating scroll buttons to account for image load and layout settling
+        const timeoutId = setTimeout(updateScrollButtons, 500)
 
         return () => {
-            window.removeEventListener("scroll", handleScroll)
-            window.removeEventListener("resize", handleScroll)
-            if (animationFrameId.current) cancelAnimationFrame(animationFrameId.current)
+            container.removeEventListener("scroll", handleScroll)
+            window.removeEventListener("resize", updateScrollButtons)
+            clearTimeout(timeoutId)
         }
     }, [])
+
+    const handleScrollClick = (direction) => {
+        const container = partnerTrackRef.current
+        if (!container) return
+
+        const cards = container.querySelectorAll(".premium-card")
+        if (cards.length === 0) return
+
+        const cardWidth = cards[0].getBoundingClientRect().width
+        const gap = parseFloat(getComputedStyle(container).gap) || 0
+        const step = cardWidth + gap
+
+        const currentScroll = container.scrollLeft
+        let targetScroll
+
+        if (direction === "left") {
+            const currentIndex = Math.round(currentScroll / step)
+            targetScroll = Math.max(0, (currentIndex - 1) * step)
+        } else {
+            const currentIndex = Math.round(currentScroll / step)
+            const maxScroll = container.scrollWidth - container.clientWidth
+            targetScroll = Math.min(maxScroll, (currentIndex + 1) * step)
+        }
+
+        container.scrollTo({
+            left: targetScroll,
+            behavior: "smooth"
+        })
+    }
 
     useEffect(() => {
         const section = statsRef.current
@@ -168,7 +180,6 @@ const HomePage = () => {
                 <div className="hero-video-container">
                     <video className="hero-video" muted autoPlay loop src="/mainVideo.mp4"></video>
                 </div>
-                <Particles />
                 
                 <div className="absolute bottom-16 sm:bottom-40 w-fit font-windoor-main left-6 sm:left-16 flex flex-col gap-4 sm:gap-5 text-white max-w-[90vw] z-20">
                     <TextReveal mode="words" delay={0.1}>
@@ -217,7 +228,7 @@ const HomePage = () => {
                     <Link to={'/about'} className="uppercase font-bold font-windoor-main border-b-2 border-windoor-primary w-fit hover:opacity-70 transition-opacity">Read Our Story</Link>
                 </div>
                 <div className="w-full md:w-1/2 lg:w-1/3" data-cursor="view">
-                    <ImageReveal src="/images/about.jpeg" alt="Windoor Architecture" aspectClass="aspect-4/5" />
+                    <ImageReveal src="/images/logo.jpeg" alt="Windoor Architecture" aspectClass="aspect-4/5" />
                 </div>
             </div>
 
@@ -246,8 +257,13 @@ const HomePage = () => {
             </div>
 
             {/* ── Collaborations ────────────────────────────────────────── */}
-            <div ref={partnerContainerRef} className="relative h-[250vh] w-full bg-windoor-container-low">
-                <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-center py-8 sm:py-12">
+            <section className="py-20 sm:py-32 md:py-40 bg-windoor-container-low border-b border-windoor-structural-grey/40 relative">
+                <style>{`
+                    .no-scrollbar::-webkit-scrollbar {
+                        display: none;
+                    }
+                `}</style>
+                <div className="w-full flex flex-col justify-center">
                     <div className="w-full max-w-360 mx-auto px-6 sm:px-16 mb-8 sm:mb-12">
                         <TextReveal mode="words">
                             <p className="tracking-[3px] font-windoor-main uppercase text-xs text-windoor-text-muted mb-2">Collaborations</p>
@@ -258,11 +274,45 @@ const HomePage = () => {
                             </TextReveal>
                         </h2>
                     </div>
-                    <div className="w-full overflow-visible">
+                    
+                    <div 
+                        className="relative w-full"
+                        onMouseEnter={() => setIsHovered(true)}
+                        onMouseLeave={() => setIsHovered(false)}
+                    >
+                        {/* Left Arrow Button */}
+                        <button
+                            onClick={() => handleScrollClick("left")}
+                            className={`absolute left-6 sm:left-16 top-1/2 -translate-y-1/2 z-30 w-12 h-12 flex items-center justify-center rounded-full bg-white/90 border border-windoor-structural-grey/60 text-windoor-primary shadow-sm transition-all duration-300 hover:bg-windoor-primary hover:text-white hover:border-windoor-primary cursor-pointer ${
+                                isHovered && canScrollLeft ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
+                            }`}
+                            aria-label="Scroll left"
+                        >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+                                <path d="M15 19l-7-7 7-7" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                        </button>
+
+                        {/* Right Arrow Button */}
+                        <button
+                            onClick={() => handleScrollClick("right")}
+                            className={`absolute right-6 sm:right-16 top-1/2 -translate-y-1/2 z-30 w-12 h-12 flex items-center justify-center rounded-full bg-white/90 border border-windoor-structural-grey/60 text-windoor-primary shadow-sm transition-all duration-300 hover:bg-windoor-primary hover:text-white hover:border-windoor-primary cursor-pointer ${
+                                isHovered && canScrollRight ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
+                            }`}
+                            aria-label="Scroll right"
+                        >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+                                <path d="M9 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                        </button>
+
                         <div 
                             ref={partnerTrackRef} 
-                            className="flex gap-6 sm:gap-8 px-6 sm:px-16 w-fit will-change-transform animate-ease-out"
-                            style={{ transform: 'translate3d(0px, 0, 0)' }}
+                            className="w-full overflow-x-auto flex gap-6 sm:gap-8 px-6 sm:px-16 scroll-smooth no-scrollbar scroll-pl-6 sm:scroll-pl-16"
+                            style={{
+                                scrollbarWidth: "none",
+                                msOverflowStyle: "none"
+                            }}
                         >
                             {partners.map((partner, index) => (
                                 <div 
@@ -289,7 +339,7 @@ const HomePage = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
             
 
@@ -306,56 +356,72 @@ const HomePage = () => {
                             </TextReveal>
                         </h2>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 sm:gap-8 lg:auto-rows-[360px]">
                         {[
                             {
                                 title: sliders[3]?.title || "Motorised & Minimal System",
                                 desc: sliders[3]?.desc || "State-of-the-art motorized sliding systems with ultra-slim 20mm visual sightlines.",
-                                img: sliders[3]?.images?.[0]?.src || "https://lh3.googleusercontent.com/aida-public/AB6AXuD_IC0U17ysGAzEVw3lPm7GrCRhZo5Ka6RqnWGpbRb3ORrnXLyyUAZwCLcfVLXCcVnonNsG8iRrE7eMa01khafPRAGRKU0yHGRFrc_kT--wTa414h5rX7dAKuAJAs9vZsnGVr6K2-HA7NKsQ2_82BDUq-_XzmeZYg4eBcU24YAiAJFp6ch79s-IhXwQM1IYHzSc6bm6jDdtKGD6Knb5jgHvNIc4ihYedQ-h3uC-VuPCbMx6OoQkDGUfitXZOs9nh4lNl-cQqk7sh0c",
-                                link: "/products#sliders"
+                                img: sliders[3]?.images?.[0]?.src || "/images/Keller.jpg",
+                                link: "/products#sliders",
+                                isFeatured: true
                             },
                             {
                                 title: casements[3]?.title || "Minimal Casements",
                                 desc: casements[3]?.desc || "Concealed hinges and micro-frames designed to frame exterior landscapes seamlessly.",
-                                img: casements[3]?.images?.[0]?.src || "https://lh3.googleusercontent.com/aida-public/AB6AXuBKge9VRB473RWyzVVtPQtvHb0CwRZgYroHxoIx6HoU8ZVpeViTduE0eKc-uOL6gud8IGCkvEpS7ik-RPfqUIgfz4AvmuS85K_G0fx9yer6rh_u1gXLLqaR5tKsLX9NiA6oScZVPtmDu1eOcqlkTsbl0VEJa6NJw9nCdnldpAtYZwJ5zZCKHEZwpXucxfJu3rHpzn_0XuyQ4XgYAbvfER0MhgkvZ3OH8Q9kzPmPDddbiibpp0zoZ-7rentBAACcpkjG8j0B-ARVxy4",
+                                img: casements[3]?.images?.[0]?.src || "/images/Tostem.jpg",
                                 link: "/products#casements"
                             },
                             {
                                 title: sliders[1]?.title || "DGU System",
                                 desc: sliders[1]?.desc || "Double Glazed Units built with advanced thermal profiles to maximize insulation.",
-                                img: sliders[1]?.images?.[0]?.src || "https://lh3.googleusercontent.com/aida-public/AB6AXuDp3Q_mA_D4q0JmJmecWpU43GZbV_Ay_C9acZtoHmRY_AdrbKVqQQRJSudT1JRpDI050fHbbKbzOwKo7TmNlPRc7gkJ4JyQKlJ1cOlkQEr9Nd6wsMNewTlMMSsj1Phr3kkdpCjhvtXIsYflQIz5Vl48lyTvl_o9TGKZfigvfRKQAtT8SzSXAq4SbDI8W9_nSwemeasmLRji3phO-N43_auermZ1DIG9aBLZvYWhULM0ph0sXccFeskg4DCst6gnEfD8h0Qmuv0khz0",
+                                img: sliders[1]?.images?.[0]?.src || "/images/Tostem.jpg",
                                 link: "/products#sliders"
                             },
                             {
                                 title: casements[2]?.title || "Grants Casements",
                                 desc: casements[2]?.desc || "Luxury large-span casement systems featuring hidden friction stays and perimeter seals.",
-                                img: casements[2]?.images?.[0]?.src || "https://lh3.googleusercontent.com/aida-public/AB6AXuCpK32tqoZqhdzrsHmhmR5tpKJLm8oI8fQ-cxxm0-nfs468_5dPTXR-Jso0DPv4uGfpvXkdO41Gkcz_DE38kL6AYTN6n5FeW_DgbZz1BzUXf-7USGDL3CpgD0aV5seJ3Hq7q8QulmmdDlaTGhbYb-1MeWZ0F2X9TJIpUE8AO0AZl2BUB47sQ683yINhBU72VyZIyJBJoC_jmzWWRCVAqvoe_nYcBZShxQiXF822qJ89QC5FfgsVtC-F5wUfD3_B3V6woX49DfW7ddI",
+                                img: casements[2]?.images?.[0]?.src || "/images/Tostem.jpg",
                                 link: "/products#casements"
                             },
                             {
                                 title: sliders[4]?.title || "Curved Sliding System",
                                 desc: sliders[4]?.desc || "Bespoke curved tracks that align with custom architectural radiuses without sacrificing smooth operation.",
-                                img: sliders[4]?.images?.[0]?.src || "https://lh3.googleusercontent.com/aida-public/AB6AXuBmpxckI9kpMmbOPOp_npxGtwKzNiW6FTykynnKN1gJB_R4YUjU_fac1-OdtuHb3rpbeWCdaLoDyPSOsv4ZDm0Al0qRGzdqFBhaumCOP-X0O9EE_o6PGcDq21_3oPyae4nimCmpRhe498ExvAvkTWVv9_JjMLU4pIgE00cqz3UFN7pd9VMwAPKZmPa46VU4xvoOSFIUtMGbDY7jnXz5GWiFKccte6p-5IXtNgMX9gr3Oq-sLh2CG1ZTwk2bU7T82hCojo9_WVUjkcA",
+                                img: sliders[4]?.images?.[0]?.src || "/images/Keller.jpg",
                                 link: "/products#sliders"
                             },
                             {
                                 title: ventilation.title || "Ventilation Options",
                                 desc: ventilation.desc || "Acoustically buffered ventilation slots and micro-vents designed to bring natural air circulation.",
-                                img: ventilation.images?.[0]?.src || "/images/facade.png",
+                                img: ventilation.images?.[0]?.src || "/images/facade.jpg",
                                 link: "/products#ventilation"
                             }
-                        ].map((prod, idx) => (
-                            <div key={prod.title} className="group border border-windoor-secondary bg-windoor-container-low p-6 sm:p-8 flex flex-col justify-between min-h-95 sm:min-h-112.5 premium-card" data-cursor="explore">
-                                <div className="space-y-4 sm:space-y-6">
-                                    <div className="aspect-square bg-windoor-container overflow-hidden flex items-center justify-center relative">
-                                        <ImageReveal src={prod.img} alt={prod.title} aspectClass="w-full h-full" delay={idx * 0.05} />
+                        ].map((prod, idx) => {
+                            const gridClass = prod.isFeatured
+                                ? 'col-span-12 lg:col-span-8 lg:row-span-2'
+                                : 'col-span-12 md:col-span-1 lg:col-span-4'
+
+                            return (
+                                <Link 
+                                    key={idx} 
+                                    to={prod.link} 
+                                    className={`${gridClass} group border border-windoor-secondary bg-windoor-container-low p-4 sm:p-6 flex flex-col justify-between premium-card overflow-hidden`} 
+                                    data-cursor="explore"
+                                >
+                                    <div className="flex flex-col h-full justify-between gap-4 bg-transparent">
+                                        <div className="relative overflow-hidden bg-windoor-container flex-grow aspect-[3/2] lg:aspect-auto">
+                                            <ImageReveal src={prod.img} alt={prod.title} aspectClass="w-full h-full object-cover" delay={idx * 0.05} />
+                                        </div>
+                                        <div className="space-y-2 bg-transparent">
+                                            <h4 className="font-windoor-main text-base sm:text-lg font-bold uppercase text-windoor-primary">{prod.title}</h4>
+                                            <p className="text-xs sm:text-sm text-windoor-text-muted leading-relaxed line-clamp-2">{prod.desc}</p>
+                                        </div>
+                                        <div className="self-start font-windoor-main text-[10px] uppercase tracking-widest font-bold border-b border-windoor-primary pb-1 group-hover:pr-4 transition-all duration-300">
+                                            Explore
+                                        </div>
                                     </div>
-                                    <h4 className="font-windoor-main text-base sm:text-xl font-bold uppercase">{prod.title}</h4>
-                                    <p className="text-sm text-windoor-text-muted leading-relaxed">{prod.desc}</p>
-                                </div>
-                                <Link to={prod.link} className="mt-6 self-start font-windoor-main text-xs uppercase tracking-widest font-bold border-b border-windoor-primary pb-1 group-hover:pr-4 transition-all duration-300">Explore</Link>
-                            </div>
-                        ))}
+                                </Link>
+                            )
+                        })}
                     </div>
                 </div>
             </section>
@@ -399,22 +465,50 @@ const HomePage = () => {
                         </TextReveal>
                         <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold font-windoor-main tracking-tight">
                             <TextReveal mode="words" delay={0.2} speed={0.06}>
-                                EXPERIENCE OUR PRODUCTS
+                                OUR EXPERIENCE CENTERS
                             </TextReveal>
                         </h2>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-                        {showrooms.map((room, idx) => (
-                            <Link key={room.id} to="/showrooms" className="group cursor-pointer space-y-4 block" data-cursor="view">
-                                <div className="aspect-video bg-windoor-container overflow-hidden border border-windoor-secondary relative">
-                                    <ImageReveal src={room.img} alt={`${room.city} Showroom`} aspectClass="h-full w-full" delay={idx * 0.08} />
-                                </div>
-                                <div className="flex justify-between items-center">
-                                    <h4 className="font-windoor-main text-base sm:text-xl font-bold uppercase">{room.city}</h4>
-                                    <span className="text-windoor-primary group-hover:translate-x-2 transition-transform duration-500 text-lg">→</span>
-                                </div>
-                            </Link>
-                        ))}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 sm:gap-8 lg:auto-rows-[350px]">
+                        {showrooms.map((room, idx) => {
+                            const isAhmedabad = room.id === 'ahmedabad'
+                            const gridClass = isAhmedabad 
+                                ? 'col-span-12 lg:col-span-8 lg:row-span-2' 
+                                : room.id === 'gandhinagar'
+                                    ? 'col-span-12 md:col-span-1 lg:col-span-8'
+                                    : 'col-span-12 md:col-span-1 lg:col-span-4'
+
+                            return (
+                                <Link 
+                                    key={room.id} 
+                                    to={`/showrooms#${room.id}`} 
+                                    className={`${gridClass} group cursor-pointer border border-windoor-secondary bg-white p-4 sm:p-6 flex flex-col justify-between premium-card overflow-hidden`}
+                                    data-cursor="view"
+                                >
+                                    <div className="flex flex-col h-full justify-between gap-4 bg-transparent">
+                                        <div className="relative overflow-hidden bg-windoor-container flex-grow aspect-[3/2] lg:aspect-auto">
+                                            {room.img ? (
+                                                <ImageReveal src={room.img} alt={`${room.city} Showroom`} aspectClass="h-full w-full" delay={idx * 0.05} />
+                                            ) : (
+                                                <div className="w-full h-full flex items-center justify-center bg-windoor-charcoal/5">
+                                                    <span className="font-windoor-main text-xs uppercase tracking-wider text-windoor-secondary">Image Coming Soon</span>
+                                                </div>
+                                            )}
+                                            <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 border border-windoor-secondary/30 z-10">
+                                                <span className="font-windoor-main text-[10px] uppercase tracking-wider">{room.label}</span>
+                                            </div>
+                                        </div>
+                                        <div className="flex justify-between items-center bg-transparent">
+                                            <div>
+                                                <h4 className="font-windoor-main text-base sm:text-lg font-bold uppercase text-windoor-primary">{room.city}</h4>
+                                                <p className="text-[10px] sm:text-xs text-windoor-secondary uppercase font-windoor-main tracking-widest truncate max-w-sm sm:max-w-md">{room.hours}</p>
+                                            </div>
+                                            <span className="text-windoor-primary group-hover:translate-x-2 transition-transform duration-500 text-lg">→</span>
+                                        </div>
+                                    </div>
+                                </Link>
+                            )
+                        })}
                     </div>
                 </div>
             </section>

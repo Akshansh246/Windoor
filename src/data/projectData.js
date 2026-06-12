@@ -1,170 +1,181 @@
 export const projects = [
-  {
-    id: 1,
-    title: 'Villa Zenith',
-    location: 'Ahmedabad, Gujarat',
-    type: 'Residential',
-    system: 'SLIMLINE SLIDER',
-    finish: 'ANODIZED BLACK',
-    year: '2023',
-    img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD_IC0U17ysGAzEVw3lPm7GrCRhZo5Ka6RqnWGpbRb3ORrnXLyyUAZwCLcfVLXCcVnonNsG8iRrE7eMa01khafPRAGRKU0yHGRFrc_kT--wTa414h5rX7dAKuAJAs9vZsnGVr6K2-HA7NKsQ2_82BDUq-_XzmeZYg4eBcU24YAiAJFp6ch79s-IhXwQM1IYHzSc6bm6jDdtKGD6Knb5jgHvNIc4ihYedQ-h3uC-VuPCbMx6OoQkDGUfitXZOs9nh4lNl-cQqk7sh0c',
-    slug: 'villa-zenith',
-    category: 'Residential / Luxury Portfolio',
-    architect: 'Studio Marone',
-    heroImg: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBklJxFswlyKIprKIyPkL4OBcklqP4VuN3At39SHhq4EW3fQDon81192NEcck1-Tbtirn3Yrwt4xwOwqTOGn7RrGvjhtR2U4fFsTSFzJEfJ7x8vK9QELMpUIiFJ0t5Cw4T87zIuZgmZ5bUnKF6QCsB8aeUtx5bRWHPd6Ex1wpIRC6WY7EzhFf2ZsuTP-dJ9FOlvr81mQWKsKRxCRKHl2CW6u3-9TmMqTw7zfjOTnLNCWD8yObqnKOPobniNslOH0-MFFAsCKVB3p4Q',
-    narrativeTitle: 'The Vision of Transparency',
-    narrativeText1: 'Villa Zenith represents the pinnacle of structural glazing. The challenge was to create an enclosure that offered zero visual interruption between the rugged coastline and the interior living spaces, while maintaining extreme thermal performance.',
-    narrativeText2: 'Our solution involved the custom-engineering of the W-700 Ultravue system, featuring 12-meter continuous glass spans with concealed tracks embedded directly into the structural floor slab. Every joint was calculated to withstand high-velocity coastal winds.',
-    metrics: [
-      { value: '0.8 W/m²K', label: 'Thermal Transmittance' },
-      { value: '48dB', label: 'Acoustic Insulation' }
-    ],
-    gallery: {
-      main: {
-        img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBnGYs_BMqIUj9J6-SW8pFM8Eo2Ru4wb_vH3urnv7F_0wQqSAlTQlBb2ACmwzxcGQrDeWX1PHdUxrvRy9BA9q-A5ThcJI7LDAQpNGmWykA9t8fgR1jEszBPidWnUJOUNM1eMZgasi3FI6EHi3zZ5H8F2buexFebWp-z0m0AdGAUFNlomz42rSBvBU8XF5ZSHvZzL0Nwv4kBAGz1Hx1iBWJsPFo4ZIDgApkFsMcLmEmcT_wLMtzB9JIxtIGErdZEfwyID71YijhNHKg',
-        title: 'Concealed Threshold System',
-        desc: 'Custom-milled drainage tracks hidden beneath the perimeter stone to ensure a perfectly level transition with zero step-up.'
-      },
-      grid: [
-        { img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAupNUDpPcU7r92eFFWA31XbZiM2dkYQ0qgJbQtPdw_PjokCNVCJ5bHji0ZhPJNrcDwNwiMB1bLeGnCpMmdqOhy8cevHltbD185SNA7BNP22uSQPl0kXQztfdVhdt8tXcxYM6ZXkOWKtrhnfoJuBFOIw0SAQrCexVInufDAbk5SxRPp9vlEzlOp96kolX4DhglgyPooeMNIAoQcRo_-kKfrC0f6Mr8vrH4dB6ZPf8vq4o7A4jpkQ_vHFwyVbNS34mM54tGNEVoE4SE', grayscale: true },
-        { img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDp3Q_mA_D4q0JmJmecWpU43GZbV_Ay_C9acZtoHmRY_AdrbKVqQQRJSudT1JRpDI050fHbbKbzOwKo7TmNlPRc7gkJ4JyQKlJ1cOlkQEr9Nd6wsMNewTlMMSsj1Phr3kkdpCjhvtXIsYflQIz5Vl48lyTvl_o9TGKZfigvfRKQAtT8SzSXAq4SbDI8W9_nSwemeasmLRji3phO-N43_auermZ1DIG9aBLZvYWhULM0ph0sXccFeskg4DCst6gnEfD8h0Qmuv0khz0', grayscale: false },
-        { img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAiQuEvnoboPt-cRZoW-DGzOTPVcvW0odjRRp0851RtpzcCvimveuA3i6MKsZxm9IVVF3R1tqSPMMOnUdLETngiAY3pnVjzaASLbmY6xLgQtkhlMT1fQtwFTtrHdkyvIuT0x79r2e7E0Vl--97xUodwQF7TybWUzQjT_mcuqxTaJLO_E_iXEkLcadg-TeHq81oeLBOaeEOxgq9_W4uDaZ4Q6WIwdBNc3eiYmZwIqMxq9MVpUB5sgwmouMK6sqS8C5qGrCkZp07VeJo', grayscale: true }
-      ]
-    },
-    specs: [
-      { title: 'Systems Used', items: ['W-700 Ultravue', 'P-40 Pivot Door', 'S-Sky Skylights'] },
-      { title: 'Glass Composition', tags: ['Triple Glazed', 'Low-E Coating', 'Acoustic PVB'], desc: 'Solar control glass with 70/35 selectivity, ensuring high light transmission while rejecting infrared heat.' },
-      { title: 'Finish & Materials', swatches: [{ color: 'bg-windoor-primary', label: 'Anodized Obsidian Black' }, { color: 'bg-windoor-secondary', label: 'Bead-blasted Stainless Steel' }] }
-    ],
-    nextProject: {
-      title: 'The Glass Pavilion',
-      slug: 'glass-pavilion'
+    {
+        id: 1,
+        title: 'Haridarshan Villa',
+        location: 'Ahmedabad, Gujarat',
+        type: 'Residential',
+        system: 'TOSTEM GRANTS',
+        finish: 'SHINE GREY',
+        year: '2024',
+        img: '/images/Project 1 Tostem/1.jpeg',
+        slug: 'haridarshan-villa',
+        category: 'Residential / Luxury Villa',
+        architect: 'Creative Studio and Brijesh Contractor Associates',
+        heroImg: '/images/Project 1 Tostem/1.jpeg',
+        narrativeTitle: 'Language of Modern Restraint',
+        narrativeText1:
+            'The architectural programming of Haridarshan Villa leverages strategic voids to blur the threshold between interior zones and the external landscape, positioning natural light and passive ventilation as active tectonic elements. Upon entry, the arrival sequence is immediately anchored by a centralized prayer pavilion that establishes a spiritual datum and bifurcates the public envelope into a formal reception salon and an intimate family hearth.',
+        narrativeText2:
+            'Our window solution delivers a minimal front facade characterized by clean, subtle grid lines. At the heart of the home lies a striking 20-foot double-height window that serves as a dramatic focal point. This feature utilizes a sleek three-panel sliding system designed to effortlessly capture natural breezes. When opened, it provides exceptional sweeping ventilation throughout the entire house.',
+        metrics: [
+            { value: '20 ft', label: 'Window Height' },
+            { value: '13.52 mm', label: 'Laminated Glass' }
+        ],
+        gallery: {
+            main: {
+            img: '/images/Project 1 Tostem/2.jpeg',
+            title: '20-Foot Double Height Ventilation Window',
+            desc: 'A three-panel sliding system integrated into a 20-foot double-height opening, engineered to maximize natural ventilation while maintaining clean minimal sightlines across the front facade.'
+            },
+            grid: [
+                { img: '/images/Project 1 Tostem/3.jpeg', grayscale: true },
+                { img: '/images/Project 1 Tostem/4.jpeg', grayscale: false },
+                { img: '/images/Project 1 Tostem/5.jpeg', grayscale: true },
+                { img: '/images/Project 1 Tostem/6.jpeg', grayscale: true },
+                { img: '/images/Project 1 Tostem/7.jpeg', grayscale: false },
+            ]
+        },
+        specs: [
+            {
+            title: 'Systems Used',
+            items: ['TOSTEM Grants']
+            },
+            {
+            title: 'Glass Composition',
+            tags: ['Laminated Security Glass', '13.52mm', 'ST 167 Reflective Layer'],
+            desc: 'Laminated security glass of 13.52mm along with a clear reflective layer of ST 167 for controlling direct sunlight in the southern and western facade of the house.'
+            },
+            {
+            title: 'Finish & Materials',
+            swatches: [
+                {
+                color: 'bg-windoor-secondary',
+                label: 'Shine Grey'
+                }
+            ]
+            }
+        ],
+        nextProject: {
+            title: 'Vadilals Villa',
+            slug: 'vadilals-villa'
+        }
+        },
+        {
+        id: 2,
+        title: 'Vadilals Villa',
+        location: 'Ahmedabad, Gujarat',
+        type: 'Residential',
+        system: 'TOSTEM GRANTS',
+        finish: 'DUSK GREY',
+        year: '2025',
+        img: '/images/Project 2 Tostem/2.jpg',
+        slug: 'vadilals-villa',
+        category: 'Residential / Entertainment Villa',
+        architect: 'Samarch Architects',
+        heroImg: '',
+        heroVid: '/images/Project 2 Tostem/PP 2.mp4',
+        narrativeTitle: 'Hidden Frames',
+        narrativeText1:
+            'Nestled at the heart of Ahmedabad’s Sentossa Park, the villa is seamlessly integrated into a beautifully sculpted landscape of rolling, contoured lawns. The residence is purposefully designed as a premier social hub, tailored for vibrant family gatherings, large-scale entertaining, and festive celebrations. A seamless indoor-outdoor transition connects the main house to an expansive verandah, creating a majestic pavilion overlooking the grounds.',
+        narrativeText2:
+            'To perfectly capture the client vision, expansive large-paneled sliding windows were engineered to maximize the structural opening and effortlessly merge the internal hall with the sweeping lawn. By flushing the bottom tracks into the flooring, visual barriers were eliminated to create a true sense of oneness between the indoor living space and the outdoor landscape while maintaining premium security through integrated locking systems.',
+        metrics: [
+            { value: '8 × 12 ft', label: 'Glass Panel Size' },
+            { value: 'Flush Track', label: 'Threshold Design' }
+        ],
+        gallery: {
+            main: {
+            img: '/images/Project 2 Tostem/2.jpg',
+            title: 'Flush Track Indoor-Outdoor Connection',
+            desc: 'Large-format sliding systems with fully recessed bottom tracks, creating a seamless transition between the main hall and landscaped lawn while supporting jumbo-sized glazing panels.'
+            },
+            grid: [
+            { img: '/images/Project 2 Tostem/3.jpg', grayscale: true },
+            { img: '/images/Project 2 Tostem/4.jpg', grayscale: false },
+            { img: '/images/Project 2 Tostem/5.jpg', grayscale: true }
+            ]
+        },
+        specs: [
+            {
+            title: 'Systems Used',
+            items: ['TOSTEM Grants']
+            },
+            {
+            title: 'Glass Composition',
+            tags: ['Double Glazed', 'Laminated Glass', 'Jumbo Size'],
+            desc: 'Double glazed laminated glass of jumbo size around 8 feet by 12 feet.'
+            },
+            {
+            title: 'Finish & Materials',
+            swatches: [
+                {
+                color: 'bg-windoor-secondary',
+                label: 'Dusk Grey'
+                }
+            ]
+            }
+        ],
+        nextProject: {
+            title: 'Mountain Villa',
+            slug: 'mountain-villa'
+        }
+        },
+        {
+        id: 3,
+        title: 'Mountain Villa',
+        location: 'Zurich, Switzerland',
+        type: 'Residential',
+        system: 'KELLER MINIMAL 4+',
+        finish: 'GREY ANODIZED',
+        year: '2023',
+        img: '/images/Project 3/1.jpg',
+        slug: 'mountain-villa',
+        category: 'Residential / Alpine Villa',
+        architect: '',
+        heroImg: '/images/Project 3/1.jpg',
+        narrativeTitle: 'Engineering the Invisible Barrier',
+        narrativeText1:
+            'Nestled within the Swiss Alpine topography, this residential pavilion is meticulously sited to capture panoramic vistas of the mountain ranges bordering Lake Zürich. The architecture employs strategically articulated, large-format fenestration that acts as literal picture frames. These expansive apertures blur the boundary between interior and exterior spaces, effectively integrating the alpine terrain as a dynamic living canvas within the home.',
+        narrativeText2:
+            'To withstand extreme alpine wind loads without obstructing panoramic vistas, a custom-curated Keller minimal windows® system featuring ultra-slim 21 mm sightlines was deployed. Heavy-duty sliding tracks and an architectural pivot door create a seamless architectural experience while delivering exceptional thermal performance, weather resistance, and uninterrupted views of the surrounding Swiss landscape.',
+        metrics: [
+            { value: '21 mm', label: 'Sightlines' },
+            { value: 'Triple Glazed', label: 'Glass System' }
+        ],
+        gallery: {
+            main: {
+            img: '/images/Project 3/2.jpg',
+            title: '21mm Minimal Sightline System',
+            desc: 'Custom Keller minimal windows® system featuring ultra-slim 21 mm sightlines, heavy-duty alpine-grade sliding tracks, and high-performance weather resistance for extreme mountain conditions.'
+            },
+            grid: [
+            { img: '/images/Project 3/3.jpg', grayscale: true },
+            { img: '/images/Project 3/4.jpg', grayscale: false },
+            ]
+        },
+        specs: [
+            {
+            title: 'Systems Used',
+            items: ['Keller Minimal 4+']
+            },
+            {
+            title: 'Glass Composition',
+            tags: ['Triple Glazed', 'Security Lamination', 'Thermal Insulation'],
+            desc: 'Triple glazed glass with security lamination and a thermal insulating layer on the outer glass.'
+            },
+            {
+            title: 'Finish & Materials',
+            swatches: [
+                {
+                color: 'bg-windoor-secondary',
+                label: 'Grey Anodized'
+                }
+            ]
+            }
+        ],
+        nextProject: {
+            title: '',
+            slug: ''
+        }
     }
-  },
-  {
-    id: 2,
-    title: 'The Glass Pavilion',
-    location: 'Rajkot, Gujarat',
-    type: 'Villa',
-    system: 'LIFT & SLIDE',
-    finish: 'BRUSHED STEEL',
-    year: '2024',
-    img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBewzlqSH3bka3_-luNyRnnOSlVjxt1_nZzcfaBb02jZIltdF4SGRllLz3CZhkCazW6s7bLPSBOMmqkTxL_Uapmkme13r5pSE15JRasAm1l9rjjwsDTGZUuzlK5B51GN_mjgktKLTZjI76ge6U0lGgopYre4AT7dj4KG2aAe6nauVlX90B_wDx-XiD-jjMTr_UtDOzs6KKjMmXuYdeNPAYaU6Fv1HVX_dFHiQLqCTSeJeGmvEHsP2jlGTxq7froUvb3Te28L8HOU-8',
-    slug: 'glass-pavilion',
-    category: 'Residential / Modern Pavilion',
-    architect: 'Design Studio V',
-    heroImg: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBewzlqSH3bka3_-luNyRnnOSlVjxt1_nZzcfaBb02jZIltdF4SGRllLz3CZhkCazW6s7bLPSBOMmqkTxL_Uapmkme13r5pSE15JRasAm1l9rjjwsDTGZUuzlK5B51GN_mjgktKLTZjI76ge6U0lGgopYre4AT7dj4KG2aAe6nauVlX90B_wDx-XiD-jjMTr_UtDOzs6KKjMmXuYdeNPAYaU6Fv1HVX_dFHiQLqCTSeJeGmvEHsP2jlGTxq7froUvb3Te28L8HOU-8',
-    narrativeTitle: 'Dematerializing Boundaries',
-    narrativeText1: 'The Glass Pavilion was conceived as a structural steel frame enclosing a continuous interior garden. The architectural intent was to let the structural roof appear to hover weightlessly above the landscaping, requiring full perimeter structural glass support.',
-    narrativeText2: 'We integrated the premium Lift & Slide series, featuring double thermal breaks and ultra-minimal sightlines of just 20mm. High-specification acoustic glass ensures complete isolation from external street noise, creating a peaceful oasis.',
-    metrics: [
-      { value: '0.9 W/m²K', label: 'Thermal Transmittance' },
-      { value: '45dB', label: 'Acoustic Insulation' }
-    ],
-    gallery: {
-      main: {
-        img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBewzlqSH3bka3_-luNyRnnOSlVjxt1_nZzcfaBb02jZIltdF4SGRllLz3CZhkCazW6s7bLPSBOMmqkTxL_Uapmkme13r5pSE15JRasAm1l9rjjwsDTGZUuzlK5B51GN_mjgktKLTZjI76ge6U0lGgopYre4AT7dj4KG2aAe6nauVlX90B_wDx-XiD-jjMTr_UtDOzs6KKjMmXuYdeNPAYaU6Fv1HVX_dFHiQLqCTSeJeGmvEHsP2jlGTxq7froUvb3Te28L8HOU-8',
-        title: 'Flush Floor Tracks',
-        desc: 'Precision-aligned floor tracks integrated into the polished concrete surface for completely level transition lines.'
-      },
-      grid: [
-        { img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBnGYs_BMqIUj9J6-SW8pFM8Eo2Ru4wb_vH3urnv7F_0wQqSAlTQlBb2ACmwzxcGQrDeWX1PHdUxrvRy9BA9q-A5ThcJI7LDAQpNGmWykA9t8fgR1jEszBPidWnUJOUNM1eMZgasi3FI6EHi3zZ5H8F2buexFebWp-z0m0AdGAUFNlomz42rSBvBU8XF5ZSHvZzL0Nwv4kBAGz1Hx1iBWJsPFo4ZIDgApkFsMcLmEmcT_wLMtzB9JIxtIGErdZEfwyID71YijhNHKg', grayscale: true },
-        { img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAupNUDpPcU7r92eFFWA31XbZiM2dkYQ0qgJbQtPdw_PjokCNVCJ5bHji0ZhPJNrcDwNwiMB1bLeGnCpMmdqOhy8cevHltbD185SNA7BNP22uSQPl0kXQztfdVhdt8tXcxYM6ZXkOWKtrhnfoJuBFOIw0SAQrCexVInufDAbk5SxRPp9vlEzlOp96kolX4DhglgyPooeMNIAoQcRo_-kKfrC0f6Mr8vrH4dB6ZPf8vq4o7A4jpkQ_vHFwyVbNS34mM54tGNEVoE4SE', grayscale: false },
-        { img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAiQuEvnoboPt-cRZoW-DGzOTPVcvW0odjRRp0851RtpzcCvimveuA3i6MKsZxm9IVVF3R1tqSPMMOnUdLETngiAY3pnVjzaASLbmY6xLgQtkhlMT1fQtwFTtrHdkyvIuT0x79r2e7E0Vl--97xUodwQF7TybWUzQjT_mcuqxTaJLO_E_iXEkLcadg-TeHq81oeLBOaeEOxgq9_W4uDaZ4Q6WIwdBNc3eiYmZwIqMxq9MVpUB5sgwmouMK6sqS8C5qGrCkZp07VeJo', grayscale: true }
-      ]
-    },
-    specs: [
-      { title: 'Systems Used', items: ['L-600 Lift & Slide', 'T-45 Thermobreak Windows'] },
-      { title: 'Glass Composition', tags: ['Double Glazed', 'Argon-Filled', 'Tempered Safety'], desc: 'High-clarity low-iron glass panels filled with insulating Argon gas to minimize thermal transfer.' },
-      { title: 'Finish & Materials', swatches: [{ color: 'bg-windoor-secondary', label: 'Brushed Satin Stainless Steel' }] }
-    ],
-    nextProject: {
-      title: 'Surat Corporate Hub',
-      slug: 'surat-hub'
-    }
-  },
-  {
-    id: 3,
-    title: 'Surat Corporate Hub',
-    location: 'Surat, Gujarat',
-    type: 'Commercial',
-    system: 'CURTAIN WALL',
-    finish: 'MATTE ANTHRACITE',
-    year: '2022',
-    img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAarAhIZFOgArrgwu_YF3b_8VO-icGZ59DadE7-BKSkwlA7EXl5FHi5NZ8uz3xuKAHcVbSi9Z3QDh4UIg0-T3gUuA7uF3g0-xDFcyG9ReeCmZWOztKrJQMuMZ9ULsYeAWSEBXDUnJU6nRbPcrUqsrciHxnEqrwdkZDqHX_XAgPa2LBvKDGgvtSRaNcC2cTq25lEe9OW0FzZYI8JvL4cUGKBjN_eOzt25la6AJtaWEcncIjBZ_fzpgnDHcMAmmrfa5XmfV7bFpByfGI',
-    slug: 'surat-hub',
-    category: 'Commercial / Corporate Landmark',
-    architect: 'Arch-Partners Ahmedabad',
-    heroImg: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAarAhIZFOgArrgwu_YF3b_8VO-icGZ59DadE7-BKSkwlA7EXl5FHi5NZ8uz3xuKAHcVbSi9Z3QDh4UIg0-T3gUuA7uF3g0-xDFcyG9ReeCmZWOztKrJQMuMZ9ULsYeAWSEBXDUnJU6nRbPcrUqsrciHxnEqrwdkZDqHX_XAgPa2LBvKDGgvtSRaNcC2cTq25lEe9OW0FzZYI8JvL4cUGKBjN_eOzt25la6AJtaWEcncIjBZ_fzpgnDHcMAmmrfa5XmfV7bFpByfGI',
-    narrativeTitle: 'Integrated Monolithic Facade',
-    narrativeText1: 'The Surat Corporate Hub is a multi-story headquarters requiring a high-performance curtain wall system. The structure demanded extreme wind load resistance and integrated climate control to mitigate Surat’s intense solar exposure.',
-    narrativeText2: 'We deployed our state-of-the-art structural glazed curtain walling, incorporating double silver Low-E thermal coatings. The custom anodized matte anthracite profiles anchor the architectural grids, blending engineering safety with modern texture.',
-    metrics: [
-      { value: '1.1 W/m²K', label: 'Thermal Transmittance' },
-      { value: '52dB', label: 'Acoustic Insulation' }
-    ],
-    gallery: {
-      main: {
-        img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAarAhIZFOgArrgwu_YF3b_8VO-icGZ59DadE7-BKSkwlA7EXl5FHi5NZ8uz3xuKAHcVbSi9Z3QDh4UIg0-T3gUuA7uF3g0-xDFcyG9ReeCmZWOztKrJQMuMZ9ULsYeAWSEBXDUnJU6nRbPcrUqsrciHxnEqrwdkZDqHX_XAgPa2LBvKDGgvtSRaNcC2cTq25lEe9OW0FzZYI8JvL4cUGKBjN_eOzt25la6AJtaWEcncIjBZ_fzpgnDHcMAmmrfa5XmfV7bFpByfGI',
-        title: 'Structural Silicone Glazing',
-        desc: 'Seamless glass joints with structural silicone, creating a smooth, monolithic external facade.'
-      },
-      grid: [
-        { img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBklJxFswlyKIprKIyPkL4OBcklqP4VuN3At39SHhq4EW3fQDon81192NEcck1-Tbtirn3Yrwt4xwOwqTOGn7RrGvjhtR2U4fFsTSFzJEfJ7x8vK9QELMpUIiFJ0t5Cw4T87zIuZgmZ5bUnKF6QCsB8aeUtx5bRWHPd6Ex1wpIRC6WY7EzhFf2ZsuTP-dJ9FOlvr81mQWKsKRxCRKHl2CW6u3-9TmMqTw7zfjOTnLNCWD8yObqnKOPobniNslOH0-MFFAsCKVB3p4Q', grayscale: true },
-        { img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAupNUDpPcU7r92eFFWA31XbZiM2dkYQ0qgJbQtPdw_PjokCNVCJ5bHji0ZhPJNrcDwNwiMB1bLeGnCpMmdqOhy8cevHltbD185SNA7BNP22uSQPl0kXQztfdVhdt8tXcxYM6ZXkOWKtrhnfoJuBFOIw0SAQrCexVInufDAbk5SxRPp9vlEzlOp96kolX4DhglgyPooeMNIAoQcRo_-kKfrC0f6Mr8vrH4dB6ZPf8vq4o7A4jpkQ_vHFwyVbNS34mM54tGNEVoE4SE', grayscale: false },
-        { img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAiQuEvnoboPt-cRZoW-DGzOTPVcvW0odjRRp0851RtpzcCvimveuA3i6MKsZxm9IVVF3R1tqSPMMOnUdLETngiAY3pnVjzaASLbmY6xLgQtkhlMT1fQtwFTtrHdkyvIuT0x79r2e7E0Vl--97xUodwQF7TybWUzQjT_mcuqxTaJLO_E_iXEkLcadg-TeHq81oeLBOaeEOxgq9_W4uDaZ4Q6WIwdBNc3eiYmZwIqMxq9MVpUB5sgwmouMK6sqS8C5qGrCkZp07VeJo', grayscale: true }
-      ]
-    },
-    specs: [
-      { title: 'Systems Used', items: ['C-800 Structural Curtain Wall', 'D-50 Heavy Duty Hinged Doors'] },
-      { title: 'Glass Composition', tags: ['Triple Glazed', 'Double Low-E', 'Sun Control coating'], desc: 'High-selectivity solar protection glass designed to reject infrared radiation while maintaining high visible light.' },
-      { title: 'Finish & Materials', swatches: [{ color: 'bg-windoor-charcoal', label: 'Matte Anthracite Anodized' }] }
-    ],
-    nextProject: {
-      title: 'Skyline Penthouse',
-      slug: 'skyline-penthouse'
-    }
-  },
-  {
-    id: 4,
-    title: 'Skyline Penthouse',
-    location: 'Vadodara, Gujarat',
-    type: 'Penthouse',
-    system: 'PANORAMIC FIXED',
-    finish: 'CHAMPAGNE GOLD',
-    year: '2023',
-    img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBmpxckI9kpMmbOPOp_npxGtwKzNiW6FTykynnKN1gJB_R4YUjU_fac1-OdtuHb3rpbeWCdaLoDyPSOsv4ZDm0Al0qRGzdqFBhaumCOP-X0O9EE_o6PGcDq21_3oPyae4nimCmpRhe498ExvAvkTWVv9_JjMLU4pIgE00cqz3UFN7pd9VMwAPKZmPa46VU4xvoOSFIUtMGbDY7jnXz5GWiFKccte6p-5IXtNgMX9gr3Oq-sLh2CG1ZTwk2bU7T82hCojo9_WVUjkcA',
-    slug: 'skyline-penthouse',
-    category: 'Residential / Luxury Penthouse',
-    architect: 'Desai & Shah Architects',
-    heroImg: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBmpxckI9kpMmbOPOp_npxGtwKzNiW6FTykynnKN1gJB_R4YUjU_fac1-OdtuHb3rpbeWCdaLoDyPSOsv4ZDm0Al0qRGzdqFBhaumCOP-X0O9EE_o6PGcDq21_3oPyae4nimCmpRhe498ExvAvkTWVv9_JjMLU4pIgE00cqz3UFN7pd9VMwAPKZmPa46VU4xvoOSFIUtMGbDY7jnXz5GWiFKccte6p-5IXtNgMX9gr3Oq-sLh2CG1ZTwk2bU7T82hCojo9_WVUjkcA',
-    narrativeTitle: 'Skyline Structural Frameless Panes',
-    narrativeText1: 'Sitting on the 24th floor, the Skyline Penthouse required a frameless panoramic system that could withstand immense wind load pressure at high altitudes, while framing uninterrupted panoramic views of Vadodara.',
-    narrativeText2: 'Our custom panoramic fixed system was engineered with extra thick laminated safety glass and integrated structural steel reinforcement. The frame profile was finished in luxury Champagne Gold to fit the high-end warm interior palette.',
-    metrics: [
-      { value: '0.7 W/m²K', label: 'Thermal Transmittance' },
-      { value: '50dB', label: 'Acoustic Insulation' }
-    ],
-    gallery: {
-      main: {
-        img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBmpxckI9kpMmbOPOp_npxGtwKzNiW6FTykynnKN1gJB_R4YUjU_fac1-OdtuHb3rpbeWCdaLoDyPSOsv4ZDm0Al0qRGzdqFBhaumCOP-X0O9EE_o6PGcDq21_3oPyae4nimCmpRhe498ExvAvkTWVv9_JjMLU4pIgE00cqz3UFN7pd9VMwAPKZmPa46VU4xvoOSFIUtMGbDY7jnXz5GWiFKccte6p-5IXtNgMX9gr3Oq-sLh2CG1ZTwk2bU7T82hCojo9_WVUjkcA',
-        title: 'Frameless Glass Corner',
-        desc: 'Glass-to-glass structural joints on corner turns to eliminate metal vertical frame posts entirely.'
-      },
-      grid: [
-        { img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBklJxFswlyKIprKIyPkL4OBcklqP4VuN3At39SHhq4EW3fQDon81192NEcck1-Tbtirn3Yrwt4xwOwqTOGn7RrGvjhtR2U4fFsTSFzJEfJ7x8vK9QELMpUIiFJ0t5Cw4T87zIuZgmZ5bUnKF6QCsB8aeUtx5bRWHPd6Ex1wpIRC6WY7EzhFf2ZsuTP-dJ9FOlvr81mQWKsKRxCRKHl2CW6u3-9TmMqTw7zfjOTnLNCWD8yObqnKOPobniNslOH0-MFFAsCKVB3p4Q', grayscale: true },
-        { img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBnGYs_BMqIUj9J6-SW8pFM8Eo2Ru4wb_vH3urnv7F_0wQqSAlTQlBb2ACmwzxcGQrDeWX1PHdUxrvRy9BA9q-A5ThcJI7LDAQpNGmWykA9t8fgR1jEszBPidWnUJOUNM1eMZgasi3FI6EHi3zZ5H8F2buexFebWp-z0m0AdGAUFNlomz42rSBvBU8XF5ZSHvZzL0Nwv4kBAGz1Hx1iBWJsPFo4ZIDgApkFsMcLmEmcT_wLMtzB9JIxtIGErdZEfwyID71YijhNHKg', grayscale: false },
-        { img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAupNUDpPcU7r92eFFWA31XbZiM2dkYQ0qgJbQtPdw_PjokCNVCJ5bHji0ZhPJNrcDwNwiMB1bLeGnCpMmdqOhy8cevHltbD185SNA7BNP22uSQPl0kXQztfdVhdt8tXcxYM6ZXkOWKtrhnfoJuBFOIw0SAQrCexVInufDAbk5SxRPp9vlEzlOp96kolX4DhglgyPooeMNIAoQcRo_-kKfrC0f6Mr8vrH4dB6ZPf8vq4o7A4jpkQ_vHFwyVbNS34mM54tGNEVoE4SE', grayscale: true }
-      ]
-    },
-    specs: [
-      { title: 'Systems Used', items: ['F-900 Frameless Glazing', 'T-45 Thermobreak Casements'] },
-      { title: 'Glass Composition', tags: ['Laminated Safety', 'Argon-Filled Triple Glazed', 'Acoustic PVB'], desc: 'High-strength laminated safety glass panels featuring advanced thermal spacers and acoustic attenuation membranes.' },
-      { title: 'Finish & Materials', swatches: [{ color: 'bg-windoor-secondary', label: 'Luxury Champagne Gold Anodized' }] }
-    ],
-    nextProject: {
-      title: 'Villa Zenith',
-      slug: 'villa-zenith'
-    }
-  }
 ];

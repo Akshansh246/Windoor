@@ -27,7 +27,7 @@ export const sliders = [
     images: [
       { src: "https://lh3.googleusercontent.com/aida-public/AB6AXuD_IC0U17ysGAzEVw3lPm7GrCRhZo5Ka6RqnWGpbRb3ORrnXLyyUAZwCLcfVLXCcVnonNsG8iRrE7eMa01khafPRAGRKU0yHGRFrc_kT--wTa414h5rX7dAKuAJAs9vZsnGVr6K2-HA7NKsQ2_82BDUq-_XzmeZYg4eBcU24YAiAJFp6ch79s-IhXwQM1IYHzSc6bm6jDdtKGD6Knb5jgHvNIc4ihYedQ-h3uC-VuPCbMx6OoQkDGUfitXZOs9nh4lNl-cQqk7sh0c", label: "Minimal 4+" },
       { src: "https://lh3.googleusercontent.com/aida-public/AB6AXuBewzlqSH3bka3_-luNyRnnOSlVjxt1_nZzcfaBb02jZIltdF4SGRllLz3CZhkCazW6s7bLPSBOMmqkTxL_Uapmkme13r5pSE15JRasAm1l9rjjwsDTGZUuzlK5B51GN_mjgktKLTZjI76ge6U0lGgopYre4AT7dj4KG2aAe6nauVlX90B_wDx-XiD-jjMTr_UtDOzs6KKjMmXuYdeNPAYaU6Fv1HVX_dFHiQLqCTSeJeGmvEHsP2jlGTxq7froUvb3Te28L8HOU-8", label: "NGS" },
-      { src: "/images/kellar.png", label: "Keller Reference" },
+      { src: "/images/Keller.jpg", label: "Keller Reference" },
       { src: "https://lh3.googleusercontent.com/aida-public/AB6AXuAarAhIZFOgArrgwu_YF3b_8VO-icGZ59DadE7-BKSkwlA7EXl5FHi5NZ8uz3xuKAHcVbSi9Z3QDh4UIg0-T3gUuA7uF3g0-xDFcyG9ReeCmZWOztKrJQMuMZ9ULsYeAWSEBXDUnJU6nRbPcrUqsrciHxnEqrwdkZDqHX_XAgPa2LBvKDGgvtSRaNcC2cTq25lEe9OW0FzZYI8JvL4cUGKBjN_eOzt25la6AJtaWEcncIjBZ_fzpgnDHcMAmmrfa5XmfV7bFpByfGI", label: "Related Project" }
     ]
   },
@@ -77,7 +77,7 @@ export const ventilation = {
   title: "Ventilation Options",
   desc: "Acoustically buffered ventilation slots and micro-vents designed to bring natural air circulation without compromising energy efficiency.",
   images: [
-    { src: "/images/facade.png", label: "Integrated Profile Ventilation Slot" },
+    { src: "/images/facade.jpg", label: "Integrated Profile Ventilation Slot" },
     { src: "https://lh3.googleusercontent.com/aida-public/AB6AXuDsSjOT66KgUfGNIGX3mash_YCjSiDLKqnceL7J70N0jCmsHimHEqMewqxGpWPDz4wobqACyw2sB5KPqPwFmBoqqoTxvX9CgLJXyO6wow0qNWXGFAj7Ou6r3MlTFoFOz9eam2VAoNsO3KTn7YMnwpuGY9gxXHfe0XTvXc5S7CktSurqELEg3jqWq5w90h5XSsAMu1fxPJbLNhcgz9NAGPUK6H59EKkBDccpjf_V17gJCq5g_evoVXddR0l4u25P_a2iOMuQGn0VjkQ", label: "Aero-vent Integration Detail" }
   ]
 };

@@ -1,10 +1,49 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link, useParams } from 'react-router'
 import Footer from '../components/Footer'
 import TextReveal from '../components/TextReveal'
 import ImageReveal from '../components/ImageReveal'
 import NotFoundPage from './NotFoundPage'
 import { projects } from '../data/projectData'
+
+const VideoReveal = ({ src }) => {
+    const containerRef = useRef(null)
+    const [isIntersecting, setIsIntersecting] = useState(false)
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsIntersecting(true)
+                    observer.unobserve(entry.target)
+                }
+            },
+            { threshold: 0 }
+        )
+
+        if (containerRef.current) {
+            observer.observe(containerRef.current)
+        }
+
+        return () => observer.disconnect()
+    }, [])
+
+    return (
+        <div
+            ref={containerRef}
+            className={`image-reveal-container h-full w-full ${isIntersecting ? 'active' : ''}`}
+        >
+            <video
+                src={src}
+                className="image-reveal-img w-full h-full object-cover"
+                muted
+                autoPlay
+                loop
+                playsInline
+            />
+        </div>
+    )
+}
 
 const ProjectDetailPage = () => {
     const { slug } = useParams()
@@ -19,13 +58,16 @@ const ProjectDetailPage = () => {
     }
 
     const projectImages = [
-        { src: project.heroImg, label: `${project.title} - Main Exterior` },
-        { src: project.gallery.main.img, label: project.gallery.main.title },
-        ...project.gallery.grid.map((g, i) => ({ src: g.img, label: `${project.title} - Detail 0${i + 1}` }))
-    ]
+        project.heroImg ? { src: project.heroImg, label: `${project.title} - Main Exterior` } : null,
+        project.gallery?.main?.img ? { src: project.gallery.main.img, label: project.gallery.main.title } : null,
+        ...(project.gallery?.grid || []).map((g, i) => g.img ? { src: g.img, label: `${project.title} - Detail 0${i + 1}` } : null)
+    ].filter(Boolean)
 
-    const openLightbox = (index) => {
-        setLightbox({ isOpen: true, index })
+    const openLightbox = (imageSrc) => {
+        const index = projectImages.findIndex(img => img.src === imageSrc)
+        if (index !== -1) {
+            setLightbox({ isOpen: true, index })
+        }
     }
 
     const closeLightbox = () => {
@@ -94,13 +136,19 @@ const ProjectDetailPage = () => {
                     <Link to="/projects" className="font-windoor-main text-xs uppercase tracking-widest text-windoor-secondary hover:text-windoor-primary flex items-center gap-2 transition-colors shrink-0">← Back to Portfolio</Link>
                 </div>
 
-                <div 
-                    className="relative w-full aspect-video sm:aspect-21/9 overflow-hidden group cursor-pointer" 
-                    data-cursor="view"
-                    onClick={() => openLightbox(0)}
-                >
-                    <ImageReveal src={project.heroImg} alt={project.title} aspectClass="h-full w-full" />
-                </div>
+                {project.heroImg ? (
+                    <div 
+                        className="relative w-full aspect-video sm:aspect-21/9 overflow-hidden group cursor-pointer" 
+                        data-cursor="view"
+                        onClick={() => openLightbox(project.heroImg)}
+                    >
+                        <ImageReveal src={project.heroImg} alt={project.title} aspectClass="h-full w-full" />
+                    </div>
+                ) : project.heroVid ? (
+                    <div className="relative w-full aspect-video sm:aspect-21/9 overflow-hidden">
+                        <VideoReveal src={project.heroVid} />
+                    </div>
+                ) : null}
             </section>
 
             {/* Narrative */}
@@ -133,26 +181,28 @@ const ProjectDetailPage = () => {
             {/* Gallery */}
             <section className="px-6 sm:px-16 max-w-360 mx-auto mb-16 sm:mb-24 lg:mb-40">
                 <div className="grid grid-cols-12 gap-4 sm:gap-8">
-                    <div 
-                        className="col-span-12 md:col-span-8 aspect-4/3 overflow-hidden border border-windoor-secondary relative group cursor-pointer" 
-                        data-cursor="view"
-                        onClick={() => openLightbox(1)}
-                    >
-                        <ImageReveal src={project.gallery.main.img} alt={project.gallery.main.title} aspectClass="h-full w-full" />
-                    </div>
+                    {project.gallery?.main?.img && (
+                        <div 
+                            className="col-span-12 md:col-span-8 aspect-4/3 overflow-hidden border border-windoor-secondary relative group cursor-pointer" 
+                            data-cursor="view"
+                            onClick={() => openLightbox(project.gallery.main.img)}
+                        >
+                            <ImageReveal src={project.gallery.main.img} alt={project.gallery.main.title} aspectClass="h-full w-full" />
+                        </div>
+                    )}
                     <div className="col-span-12 md:col-span-4 aspect-square bg-white border border-windoor-secondary p-6 sm:p-12 flex flex-col justify-between premium-card">
                         <div>
                             <span className="font-windoor-main text-xs text-windoor-primary mb-4 block">TECH DETAIL 01</span>
-                            <h3 className="text-lg sm:text-2xl font-windoor-main font-bold">{project.gallery.main.title}</h3>
+                            <h3 className="text-lg sm:text-2xl font-windoor-main font-bold">{project.gallery?.main?.title}</h3>
                         </div>
-                        <p className="font-windoor-main text-xs text-windoor-secondary leading-relaxed">{project.gallery.main.desc}</p>
+                        <p className="font-windoor-main text-xs text-windoor-secondary leading-relaxed">{project.gallery?.main?.desc}</p>
                     </div>
-                    {project.gallery.grid.map((g, i) => (
+                    {(project.gallery?.grid || []).map((g, i) => g.img && (
                         <div 
                             key={i} 
                             className="col-span-12 md:col-span-4 aspect-square overflow-hidden border border-windoor-secondary relative group cursor-pointer animate-card animate-duration-700" 
                             data-cursor="view"
-                            onClick={() => openLightbox(2 + i)}
+                            onClick={() => openLightbox(g.img)}
                         >
                             <ImageReveal src={g.img} alt={`Gallery ${i + 3}`} aspectClass="h-full w-full" delay={i * 0.1} />
                         </div>

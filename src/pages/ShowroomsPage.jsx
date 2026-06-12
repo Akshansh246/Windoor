@@ -1,17 +1,38 @@
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router'
 import Footer from '../components/Footer'
 import TextReveal from '../components/TextReveal'
 import ImageReveal from '../components/ImageReveal'
-
 import { showrooms } from '../data/showroomData'
 
 const ShowroomsPage = () => {
+    // State to toggle between Photo and Map view for each showroom card
+    const [viewMap, setViewMap] = useState({})
+
+    const toggleView = (id) => {
+        setViewMap(prev => ({ ...prev, [id]: !prev[id] }))
+    }
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            const hash = window.location.hash
+            if (hash) {
+                const element = document.getElementById(hash.substring(1))
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                }
+            }
+        }, 300)
+        return () => clearTimeout(timer)
+    }, [])
+
     return (
-        <main className="pt-18">
+        <main className="pt-18 bg-windoor-background">
 
             {/* Hero */}
-            <section className="max-w-360 mx-auto px-6 sm:px-16 pt-20 sm:pt-28 lg:pt-32 mb-16 sm:mb-24 lg:mb-32">
+            <section className="max-w-360 mx-auto px-6 sm:px-16 pt-20 sm:pt-28 lg:pt-32 mb-16 sm:mb-20">
                 <div className="max-w-3xl">
+                    <span className="font-windoor-main text-xs uppercase text-windoor-secondary tracking-[0.2em] mb-4 block">Our Presence</span>
                     <h1 className="text-xl sm:text-4xl md:text-5xl lg:text-6xl font-bold font-windoor-main uppercase tracking-tighter leading-tight mb-6 sm:mb-8">
                         <TextReveal mode="words">Experience Precision.</TextReveal>
                     </h1>
@@ -23,106 +44,105 @@ const ShowroomsPage = () => {
                 </div>
             </section>
 
-            {/* Showrooms */}
-            <section className="max-w-360 mx-auto px-6 sm:px-16 space-y-20 sm:space-y-32 lg:space-y-40 pb-20 sm:pb-32 lg:pb-40">
+            {/* Bento Grid */}
+            <section className="max-w-360 mx-auto px-6 sm:px-16 pb-20 sm:pb-32 lg:pb-40">
+                <div className="grid grid-cols-12 gap-6 sm:gap-8">
+                    {showrooms.map((room) => {
+                        const isAhmedabad = room.id === 'ahmedabad'
+                        const colSpanClass = isAhmedabad ? 'col-span-12 lg:col-span-8' : 'col-span-12 md:col-span-6 lg:col-span-4'
+                        const isShowingMap = !!viewMap[room.id]
+                        const directionsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(room.address)}`
+                        const mapEmbedUrl = `https://maps.google.com/maps?q=${encodeURIComponent(room.address)}&t=&z=15&ie=UTF8&iwloc=&output=embed`
 
-                {/* Ahmedabad — Flagship */}
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 group">
-                    <div className="col-span-12 md:col-span-7 relative aspect-video md:aspect-video overflow-hidden border border-windoor-secondary bg-windoor-container-low" data-cursor="view">
-                        <ImageReveal src={showrooms[0].img} alt="Ahmedabad Showroom" aspectClass="h-full w-full" />
-                    </div>
-                    <div className="col-span-12 md:col-span-5 flex flex-col justify-center py-4 sm:py-8">
-                        <TextReveal mode="words">
-                            <span className="font-windoor-main text-xs uppercase text-windoor-secondary mb-4 tracking-[0.2em]">Flagship Location</span>
-                        </TextReveal>
-                        <h2 className="text-lg sm:text-3xl lg:text-4xl font-bold font-windoor-main mb-6 uppercase tracking-tight">
-                            <TextReveal mode="words" delay={0.2}>Ahmedabad</TextReveal>
-                        </h2>
-                        <div className="space-y-5 border-l-2 border-windoor-primary pl-6 sm:pl-8">
-                            <div>
-                                <p className="font-windoor-main text-xs uppercase text-windoor-primary mb-1">Address</p>
-                                <p className="text-sm text-windoor-secondary leading-relaxed">{showrooms[0].address}</p>
-                            </div>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div>
-                                    <p className="font-windoor-main text-xs uppercase text-windoor-primary mb-1">Contact</p>
-                                    <p className="text-sm text-windoor-secondary">{showrooms[0].phone}</p>
-                                </div>
-                                <div>
-                                    <p className="font-windoor-main text-xs uppercase text-windoor-primary mb-1">Hours</p>
-                                    <p className="text-sm text-windoor-secondary">{showrooms[0].hours}</p>
-                                </div>
-                            </div>
-                            <div className="pt-2 flex flex-wrap gap-4">
-                                <a href="https://maps.google.com/?q=Windoors+Marketing+Ahmedabad" target="_blank" rel="noopener noreferrer" className="border border-windoor-primary px-5 py-3 font-windoor-main text-xs uppercase tracking-widest hover:bg-windoor-primary hover:text-white transition-all inline-block text-center">Directions</a>
-                                <button 
-                                    onClick={() => document.getElementById('ahmedabad-map')?.scrollIntoView({ behavior: 'smooth' })}
-                                    className="font-windoor-main text-xs uppercase tracking-widest cursor-pointer"
-                                >
-                                    View Map →
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="ahmedabad-map" className="col-span-12 h-40 sm:h-50 border border-windoor-secondary mt-4 sm:mt-8 relative overflow-hidden bg-windoor-container-low flex items-center justify-center opacity-40 hover:opacity-100 transition-opacity duration-500">
-                         <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14639.844079550252!2d72.54102676112669!3d23.04407519196918!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e858c5f97f9b7%3A0x1cb00fb876b4974a!2sWindoors%20Marketing!5e0!3m2!1sen!2sin!4v1780389969782!5m2!1sen!2sin"
-                            width="100%"
-                            height="100%"
-                            style={{ border: 0 }}
-                            allowFullScreen
-                            loading="lazy"
-                            referrerPolicy="no-referrer-when-downgrade"
-                            className="absolute inset-0 w-full h-full"
-                        />
-                    </div>
-                </div>
+                        return (
+                            <div 
+                                key={room.id}
+                                id={room.id}
+                                className={`${colSpanClass} border border-windoor-secondary/30 bg-white premium-card p-4 sm:p-6 flex flex-col justify-between group overflow-hidden`}
+                                data-cursor="view"
+                            >
+                                <div className={`flex flex-col h-full gap-6 ${isAhmedabad ? 'lg:flex-row lg:items-stretch' : ''}`}>
+                                    
+                                    {/* Media Section: Image or Map */}
+                                    <div className={`relative overflow-hidden border border-windoor-secondary/20 bg-windoor-container-low shrink-0 aspect-video sm:aspect-16/10 ${isAhmedabad ? 'lg:w-1/2 lg:aspect-auto lg:min-h-[300px]' : 'w-full'}`}>
+                                        {!isShowingMap ? (
+                                            room.img ? (
+                                                <ImageReveal src={room.img} alt={`${room.city} Showroom`} aspectClass="h-full w-full" />
+                                            ) : (
+                                                <div className="w-full h-full flex items-center justify-center bg-windoor-charcoal/5">
+                                                    <span className="font-windoor-main text-xs uppercase tracking-wider text-windoor-secondary">Image Coming Soon</span>
+                                                </div>
+                                            )
+                                        ) : (
+                                            <iframe
+                                                src={mapEmbedUrl}
+                                                width="100%"
+                                                height="100%"
+                                                style={{ border: 0 }}
+                                                allowFullScreen
+                                                loading="lazy"
+                                                referrerPolicy="no-referrer-when-downgrade"
+                                                className="absolute inset-0 w-full h-full"
+                                            />
+                                        )}
+                                        {/* Toggle button overlaid on media */}
+                                        <button
+                                            onClick={() => toggleView(room.id)}
+                                            className="absolute bottom-4 right-4 z-25 bg-windoor-primary/95 text-white hover:bg-windoor-secondary font-windoor-main text-[10px] uppercase tracking-widest px-3.5 py-2 border border-white/10 hover:border-white/20 transition-all cursor-pointer backdrop-blur-sm shadow-md"
+                                        >
+                                            {isShowingMap ? 'View Photo 👁' : 'View Map 🗺'}
+                                        </button>
+                                        <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1.5 border border-windoor-secondary/40 z-10">
+                                            <span className="font-windoor-main text-[10px] uppercase tracking-wider">{room.label}</span>
+                                        </div>
+                                    </div>
 
-                {/* Rajkot & Anand */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-8">
-                    {showrooms.slice(1, 3).map((room) => (
-                        <div key={room.id} className="space-y-6 sm:space-y-8 group premium-card p-4 border border-windoor-secondary/20 bg-white" data-cursor="view">
-                            <div className="aspect-square overflow-hidden border border-windoor-secondary bg-windoor-container-low relative">
-                                <ImageReveal src={room.img} alt={`${room.city} Showroom`} aspectClass="h-full w-full" />
-                                <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 bg-white/90 px-3 sm:px-4 py-2 border border-windoor-secondary z-10">
-                                    <span className="font-windoor-main text-xs uppercase">{room.label}</span>
-                                </div>
-                            </div>
-                            <div>
-                                <h2 className="text-lg sm:text-2xl font-windoor-main font-bold mb-4 uppercase tracking-tight">{room.city}</h2>
-                                <div className="space-y-4 border-l border-windoor-structural-grey pl-6 bg-transparent">
-                                    <p className="text-sm text-windoor-secondary leading-relaxed">{room.address}</p>
-                                    <p className="font-windoor-main text-xs text-windoor-primary">{room.phone}</p>
-                                    <div className="h-24 sm:h-32 border border-windoor-secondary bg-windoor-container-low flex items-center justify-center opacity-50">
-                                        <div className="font-windoor-main text-[10px] uppercase tracking-widest text-windoor-secondary">Map Preview</div>
+                                    {/* Info Section */}
+                                    <div className={`flex flex-col justify-between flex-grow gap-6 bg-transparent ${isAhmedabad ? 'lg:w-1/2 lg:pl-2' : ''}`}>
+                                        <div className="space-y-4">
+                                            <h2 className="text-xl sm:text-2xl font-windoor-main font-bold uppercase tracking-tight text-windoor-primary">
+                                                {room.city}
+                                            </h2>
+                                            <div className="space-y-3 border-l-2 border-windoor-primary pl-4 bg-transparent">
+                                                <div className="bg-transparent">
+                                                    <span className="font-windoor-main text-[10px] uppercase text-windoor-secondary tracking-widest block mb-1">Address</span>
+                                                    <p className="text-xs sm:text-sm text-windoor-text-muted leading-relaxed">{room.address}</p>
+                                                </div>
+                                                <div className="grid grid-cols-2 gap-2 pt-1 bg-transparent">
+                                                    <div className="bg-transparent">
+                                                        <span className="font-windoor-main text-[10px] uppercase text-windoor-secondary tracking-widest block mb-1">Contact</span>
+                                                        <p className="text-xs text-windoor-text-muted">{room.phone}</p>
+                                                    </div>
+                                                    <div className="bg-transparent">
+                                                        <span className="font-windoor-main text-[10px] uppercase text-windoor-secondary tracking-widest block mb-1">Hours</span>
+                                                        <p className="text-xs text-windoor-text-muted">{room.hours}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* CTA Buttons */}
+                                        <div className="flex items-center gap-3 pt-2 bg-transparent">
+                                            <a 
+                                                href={directionsUrl}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="border border-windoor-primary px-4 sm:px-5 py-2.5 sm:py-3 font-windoor-main text-[10px] uppercase tracking-widest hover:bg-windoor-primary hover:text-white transition-all inline-block text-center flex-grow"
+                                            >
+                                                Directions ↗
+                                            </a>
+                                            <Link 
+                                                to="/contact" 
+                                                className="btn font-windoor-main text-[10px] px-4 sm:px-5 py-2.5 sm:py-3 uppercase tracking-widest text-center flex-grow"
+                                            >
+                                                Book Visit
+                                            </Link>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
-                </div>
-
-                {/* Mehsana */}
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 group items-end">
-                    <div className="col-span-12 md:col-span-4 order-2 md:order-1 py-4 sm:py-8">
-                        <h2 className="text-lg sm:text-3xl lg:text-4xl font-bold font-windoor-main mb-6 uppercase tracking-tight">Mehsana</h2>
-                        <div className="space-y-5 md:border-r-2 md:border-windoor-primary md:pr-8 md:text-right">
-                            <div>
-                                <p className="font-windoor-main text-xs uppercase text-windoor-primary mb-1">Location</p>
-                                <p className="text-sm text-windoor-secondary leading-relaxed">{showrooms[3].address}</p>
-                            </div>
-                            <div>
-                                <p className="font-windoor-main text-xs uppercase text-windoor-primary mb-1">Direct Line</p>
-                                <p className="text-sm text-windoor-secondary">{showrooms[3].phone}</p>
-                            </div>
-                            <div className="pt-4 md:flex md:justify-end">
-                                <Link to="/contact" className="btn font-windoor-main text-xs px-6 sm:px-8 py-3 uppercase tracking-widest text-center">Book Consultation</Link>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-span-12 md:col-span-8 order-1 md:order-2 relative overflow-hidden border border-windoor-secondary group" data-cursor="view">
-                        <ImageReveal src={showrooms[3].img} alt="Mehsana Showroom" aspectClass="h-70 sm:h-100 lg:h-125" />
-                    </div>
+                        )
+                    })}
                 </div>
             </section>
 

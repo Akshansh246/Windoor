@@ -95,6 +95,8 @@ const ProductsPage = () => {
     const casementsRef = useRef(null)
     const ventilationRef = useRef(null)
 
+    const [activeSection, setActiveSection] = useState('sliders')
+
     const openLightbox = (images, index) => {
         setLightbox({ isOpen: true, images, index });
     };
@@ -137,14 +139,35 @@ const ProductsPage = () => {
     }, [lightbox.isOpen, lightbox.images.length]);
 
     useEffect(() => {
+        const handleScroll = () => {
+            const scrollPos = window.scrollY + 250
+            const slidersTop = slidersRef.current?.offsetTop || 0
+            const casementsTop = casementsRef.current?.offsetTop || 0
+            const ventilationTop = ventilationRef.current?.offsetTop || 0
+
+            if (scrollPos >= ventilationTop) {
+                setActiveSection('ventilation')
+            } else if (scrollPos >= casementsTop) {
+                setActiveSection('casements')
+            } else {
+                setActiveSection('sliders')
+            }
+        }
+
+        window.addEventListener('scroll', handleScroll, { passive: true })
+        handleScroll()
+        return () => window.removeEventListener('scroll', handleScroll)
+    }, [])
+
+    useEffect(() => {
         const timer = setTimeout(() => {
             const hash = window.location.hash;
             if (hash === '#sliders' && slidersRef.current) {
-                slidersRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                scrollToSection(slidersRef);
             } else if (hash === '#casements' && casementsRef.current) {
-                casementsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                scrollToSection(casementsRef);
             } else if (hash === '#ventilation' && ventilationRef.current) {
-                ventilationRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                scrollToSection(ventilationRef);
             }
         }, 150);
         return () => clearTimeout(timer);
@@ -152,7 +175,16 @@ const ProductsPage = () => {
 
     const scrollToSection = (ref) => {
         if (ref.current) {
-            ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            const offset = 140
+            const bodyRect = document.body.getBoundingClientRect().top
+            const elementRect = ref.current.getBoundingClientRect().top
+            const elementPosition = elementRect - bodyRect
+            const offsetPosition = elementPosition - offset
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            })
         }
     };
 
@@ -177,25 +209,37 @@ const ProductsPage = () => {
             </header>
 
             {/* Category Sub-navigation */}
-            <div className="px-6 sm:px-16 max-w-360 mx-auto mb-16 sm:mb-24">
-                <div className="flex flex-wrap gap-4 border-b border-windoor-structural-grey/30 pb-6 font-windoor-main text-xs uppercase tracking-widest">
+            <div className="sticky top-[52px] sm:top-[64px] z-40 bg-windoor-background/80 backdrop-blur-md border-b border-windoor-structural-grey/30 py-4 px-6 sm:px-16 transition-all duration-300">
+                <div className="max-w-360 mx-auto flex flex-wrap gap-3 sm:gap-4 font-windoor-main text-[10px] sm:text-xs uppercase tracking-widest">
                     <button 
                         onClick={() => scrollToSection(slidersRef)} 
-                        className="text-windoor-secondary hover:text-windoor-primary transition-colors cursor-pointer border border-windoor-structural-grey/40 hover:border-windoor-primary px-5 py-2.5 bg-white"
+                        className={`transition-all duration-300 cursor-pointer border px-4 sm:px-5 py-2 sm:py-2.5 ${
+                            activeSection === 'sliders' 
+                                ? 'bg-windoor-primary text-white border-windoor-primary font-bold shadow-sm' 
+                                : 'text-windoor-secondary border-windoor-structural-grey/40 hover:border-windoor-primary bg-white'
+                        }`}
                     >
                         01 / Sliders ↓
                     </button>
                     <button 
                         onClick={() => scrollToSection(casementsRef)} 
-                        className="text-windoor-secondary hover:text-windoor-primary transition-colors cursor-pointer border border-windoor-structural-grey/40 hover:border-windoor-primary px-5 py-2.5 bg-white"
+                        className={`transition-all duration-300 cursor-pointer border px-4 sm:px-5 py-2 sm:py-2.5 ${
+                            activeSection === 'casements' 
+                                ? 'bg-windoor-primary text-white border-windoor-primary font-bold shadow-sm' 
+                                : 'text-windoor-secondary border-windoor-structural-grey/40 hover:border-windoor-primary bg-white'
+                        }`}
                     >
                         02 / Casements ↓
                     </button>
                     <button 
                         onClick={() => scrollToSection(ventilationRef)} 
-                        className="text-windoor-secondary hover:text-windoor-primary transition-colors cursor-pointer border border-windoor-structural-grey/40 hover:border-windoor-primary px-5 py-2.5 bg-white"
+                        className={`transition-all duration-300 cursor-pointer border px-4 sm:px-5 py-2 sm:py-2.5 ${
+                            activeSection === 'ventilation' 
+                                ? 'bg-windoor-primary text-white border-windoor-primary font-bold shadow-sm' 
+                                : 'text-windoor-secondary border-windoor-structural-grey/40 hover:border-windoor-primary bg-white'
+                        }`}
                     >
-                        03 / Ventilation Options ↓
+                        03 / Ventilation ↓
                     </button>
                 </div>
             </div>

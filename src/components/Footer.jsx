@@ -9,7 +9,7 @@ const Footer = () => {
                 <div className="sm:col-span-2 md:col-span-2">
                     <div className="text-xl sm:text-2xl font-windoor-main uppercase tracking-tighter mb-6 sm:mb-8 text-white">
                         <img src="/images/logo1.png" className='h-12 w-auto mb-1' alt="" />
-                        Win-door <br /> Marketing
+                        Windoor <br /> Marketing
                     </div>
                     <p className="font-windoor-main text-xs text-windoor-secondary leading-relaxed">Engineering clarity. Delivering structural permanence through innovative glazing solutions.</p>
                 </div>
@@ -43,7 +43,7 @@ const Footer = () => {
             </div>
 
             <div className="px-6 sm:px-16 py-6 sm:py-8 border-t border-windoor-secondary/20 max-w-360 mx-auto flex flex-col md:flex-row justify-between items-center gap-3 sm:gap-4">
-                <span className="font-windoor-main text-xs text-windoor-secondary text-center md:text-left">© 2026 Win-door Marketing. All rights reserved.</span>
+                <span className="font-windoor-main text-xs text-windoor-secondary text-center md:text-left">© 2026 Windoor Marketing. All rights reserved.</span>
                 <span className="font-windoor-main text-xs text-windoor-secondary uppercase tracking-widest">Designed for Permanence</span>
             </div>
         </footer>
