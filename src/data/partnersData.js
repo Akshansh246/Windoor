@@ -3,7 +3,7 @@ export const partners = [
         title: "TOSTEM",
         subtitle: "Japanese Pre-engineered systems",
         desc: "Industry-leading aluminum window systems focused on durability and ease of installation.",
-        img: "/images/Tostem.jpg",
+        img: "/images/tostem_main.jpg",
         link: "/about"
     },
     {
