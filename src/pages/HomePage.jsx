@@ -368,19 +368,19 @@ const HomePage = () => {
                             {
                                 title: casements[3]?.title || "Minimal Casements",
                                 desc: casements[3]?.desc || "Concealed hinges and micro-frames designed to frame exterior landscapes seamlessly.",
-                                img: casements[3]?.images?.[0]?.src || "/images/Tostem.jpg",
+                                img: casements[3]?.images?.[0]?.src || "/images/tostem_main.jpg",
                                 link: "/products#casements"
                             },
                             {
                                 title: sliders[1]?.title || "DGU System",
                                 desc: sliders[1]?.desc || "Double Glazed Units built with advanced thermal profiles to maximize insulation.",
-                                img: sliders[1]?.images?.[0]?.src || "/images/Tostem.jpg",
+                                img: sliders[1]?.images?.[0]?.src || "/images/tostem_main.jpg",
                                 link: "/products#sliders"
                             },
                             {
                                 title: casements[2]?.title || "Grants Casements",
                                 desc: casements[2]?.desc || "Luxury large-span casement systems featuring hidden friction stays and perimeter seals.",
-                                img: casements[2]?.images?.[0]?.src || "/images/Tostem.jpg",
+                                img: casements[2]?.images?.[0]?.src || "/images/tostem_main.jpg",
                                 link: "/products#casements"
                             },
                             {

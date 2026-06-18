@@ -36,7 +36,7 @@ export const brands = [
         subtitle: 'Japanese Pre-engineered Systems',
         style: '',
         desc: "TOSTEM is one of the world’s most respected names in premium aluminium windows and doors. With over 100 years of Japanese engineering philosophy and more than five decades of innovation in fenestration technology, TOSTEM is renowned for creating pre-engineered window systems that combine precision, durability, aesthetics, and performance. Designed to withstand extreme climates while maximizing natural light and ventilation, TOSTEM products are celebrated for their exceptional quality control, factory-finished precision, superior weather resistance, and minimalist modern design. What truly sets TOSTEM apart is its “Made in Japan” engineering approach — where every detail is thoughtfully designed to deliver long-lasting performance, factory precision, and a seamless connection between living spaces and nature. Currently Tostem is working across 175 cities in India.",
-        img: '/images/Tostem.jpg',
+        img: '/images/tostem_main.jpg',
         link: 'Explore Tostem Series',
         href: '/products#sliders'
     },
