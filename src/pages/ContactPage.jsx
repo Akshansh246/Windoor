@@ -1,11 +1,147 @@
+import { useMemo } from 'react'
 import Footer from '../components/Footer'
 import TextReveal from '../components/TextReveal'
 import ImageReveal from '../components/ImageReveal'
 import { Link } from 'react-router'
+import Lanyard from '../components/Lanyard'
 
 import { showrooms, hqContact } from '../data/showroomData'
 
+const createCardFace = (side, details) => {
+    if (typeof window === 'undefined') return '';
+    const canvas = document.createElement('canvas');
+    canvas.width = 512;
+    canvas.height = 768;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return '';
+
+    // Sleek charcoal/black background
+    ctx.fillStyle = '#0b0c0c';
+    ctx.fillRect(0, 0, 512, 768);
+
+    // Border
+    ctx.strokeStyle = '#d1d1d1';
+    ctx.lineWidth = 8;
+    ctx.strokeRect(15, 15, 482, 738);
+
+    ctx.strokeStyle = 'rgba(209, 209, 209, 0.2)';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(25, 25, 462, 718);
+
+    if (side === 'front') {
+        // Front Side
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 52px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('WINDOOR', 256, 260);
+
+        ctx.fillStyle = '#5d5f5f';
+        ctx.font = '16px "JetBrains Mono", monospace';
+        ctx.fillText('PREMIUM GLAZING SYSTEMS', 256, 320);
+
+        ctx.strokeStyle = 'rgba(209, 209, 209, 0.2)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(100, 360);
+        ctx.lineTo(412, 360);
+        ctx.stroke();
+
+        ctx.fillStyle = '#222222';
+        ctx.fillRect(136, 400, 240, 50);
+        ctx.strokeStyle = '#d1d1d1';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(136, 400, 240, 50);
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 15px "JetBrains Mono", monospace';
+        ctx.fillText('HQ ACCESS PASS', 256, 425);
+
+        ctx.fillStyle = '#ffffff';
+        const barcodeY = 560;
+        const barcodeHeight = 60;
+        ctx.fillRect(100, barcodeY, 312, barcodeHeight);
+        
+        ctx.fillStyle = '#0b0c0c';
+        let currentX = 105;
+        let toggle = true;
+        while (currentX < 400) {
+            const width = toggle ? 4 : 8;
+            const gap = toggle ? 6 : 4;
+            ctx.fillRect(currentX, barcodeY + 4, width, barcodeHeight - 8);
+            currentX += width + gap;
+            toggle = !toggle;
+        }
+
+        ctx.fillStyle = '#5d5f5f';
+        ctx.font = '12px "JetBrains Mono", monospace';
+        ctx.fillText('ID: WD-HQ-0009', 256, 650);
+
+    } else {
+        // Back Side
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 24px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText('CORPORATE HQ', 256, 110);
+
+        ctx.strokeStyle = 'rgba(209, 209, 209, 0.3)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(60, 150);
+        ctx.lineTo(452, 150);
+        ctx.stroke();
+
+        ctx.textAlign = 'left';
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 13px "JetBrains Mono", monospace';
+        ctx.fillText('OFFICE ADDRESS', 60, 200);
+
+        ctx.fillStyle = '#c4c7c7';
+        ctx.font = '15px "Manrope", sans-serif';
+        ctx.fillText(details.address.line1, 60, 230);
+        
+        const line2 = details.address.line2;
+        const parts = line2.split(', ');
+        let curY = 255;
+        parts.forEach(part => {
+            ctx.fillText(part, 60, curY);
+            curY += 25;
+        });
+        ctx.fillText(details.address.cityStateZip, 60, curY);
+
+        curY += 40;
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 13px "JetBrains Mono", monospace';
+        ctx.fillText('CONTACT INQUIRY', 60, curY);
+
+        ctx.fillStyle = '#c4c7c7';
+        ctx.font = '15px "Manrope", sans-serif';
+        curY += 30;
+        ctx.fillText(`Phone: ${details.phone}`, 60, curY);
+        curY += 25;
+        ctx.fillText(`Email: ${details.email}`, 60, curY);
+
+        curY += 40;
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 13px "JetBrains Mono", monospace';
+        ctx.fillText('OPERATING HOURS', 60, curY);
+
+        ctx.fillStyle = '#c4c7c7';
+        ctx.font = '15px "Manrope", sans-serif';
+        curY += 30;
+        ctx.fillText('Mon - Sat: 10:30 AM - 07:00 PM', 60, curY);
+        curY += 25;
+        ctx.fillText('Sunday: Closed', 60, curY);
+    }
+
+    return canvas.toDataURL('image/png');
+};
+
 const ContactPage = () => {
+    const frontImage = useMemo(() => createCardFace('front', hqContact), []);
+    const backImage = useMemo(() => createCardFace('back', hqContact), []);
+
     return (
         <main className="pt-18">
 
@@ -85,10 +221,28 @@ const ContactPage = () => {
 
                 {/* Side Visual + Quick Contacts */}
                 <div className="md:col-span-6 space-y-6 sm:space-y-8">
-                     <div className="h-60 sm:h-85 lg:h-100 w-full overflow-hidden relative group border border-windoor-secondary bg-windoor-container-low" data-cursor="view">
-                        <ImageReveal src={hqContact.img || "/images/Showrooms/Ahmedabad.jpg"} alt="Corporate Headquarters" aspectClass="h-full w-full" />
-                        <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 bg-white/80 backdrop-blur px-3 sm:px-4 py-2 border border-windoor-secondary z-10">
-                            <span className="font-windoor-main text-xs uppercase tracking-widest">Corporate Headquarters</span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
+                        {/* Lanyard Access Card */}
+                        <div className="h-85 sm:h-[450px] lg:h-[520px] w-full overflow-hidden relative group border border-windoor-secondary bg-windoor-container-low premium-card" data-cursor="grab">
+                            <Lanyard 
+                                position={[0, 0, 20]} 
+                                gravity={[0, -30, 0]}
+                                frontImage={frontImage}
+                                backImage={backImage}
+                                imageFit="cover"
+                                lanyardWidth={1}
+                            />
+                            <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 bg-white/80 backdrop-blur px-3 sm:px-4 py-2 border border-windoor-secondary z-10">
+                                <span className="font-windoor-main text-xs uppercase tracking-widest">HQ ACCESS CARD (Grab & Drag)</span>
+                            </div>
+                        </div>
+
+                        {/* HQ Photo */}
+                        <div className="h-85 sm:h-[450px] lg:h-[520px] w-full overflow-hidden relative group border border-windoor-secondary bg-windoor-container-low premium-card" data-cursor="view">
+                            <ImageReveal src={hqContact.img || "/images/Showrooms/Ahmedabad.jpg"} alt="Corporate Headquarters Building" aspectClass="h-full w-full" />
+                            <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 bg-white/80 backdrop-blur px-3 sm:px-4 py-2 border border-windoor-secondary z-10">
+                                <span className="font-windoor-main text-xs uppercase tracking-widest">HQ Office Exterior</span>
+                            </div>
                         </div>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
