@@ -1,9 +1,10 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import Footer from '../components/Footer'
 import TextReveal from '../components/TextReveal'
 import ImageReveal from '../components/ImageReveal'
 import { Link } from 'react-router'
 import Lanyard from '../components/Lanyard'
+import CircularGallery from '../components/CircularGallery'
 
 import { showrooms, hqContact } from '../data/showroomData'
 
@@ -141,6 +142,14 @@ const createCardFace = (side, details) => {
 const ContactPage = () => {
     const frontImage = useMemo(() => createCardFace('front', hqContact), []);
     const backImage = useMemo(() => createCardFace('back', hqContact), []);
+    
+    const [activeShowroomIndex, setActiveShowroomIndex] = useState(0);
+    const activeShowroom = showrooms[activeShowroomIndex];
+    
+    const galleryItems = useMemo(() => showrooms.map(studio => ({
+        image: studio.img,
+        text: studio.city.toUpperCase()
+    })), []);
 
     return (
         <main className="pt-18">
@@ -259,31 +268,69 @@ const ContactPage = () => {
                 </div>
             </section>
 
-            {/* Regional Network Grid */}
+            {/* Regional Network Grid / Circular Gallery */}
             <section className="px-6 sm:px-16 max-w-360 mx-auto mb-16 sm:mb-24 lg:mb-32">
-                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold font-windoor-main tracking-tight mb-8 sm:mb-12 text-center">OUR REGIONAL NETWORK</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-                     {showrooms.map((studio) => (
-                        <Link 
-                            key={studio.id}
-                            to={`/showrooms#${studio.id}`}
-                            className="border border-windoor-secondary/30 p-8 flex flex-col justify-between h-[300px] hover:bg-windoor-container-low transition-colors group bg-white premium-card cursor-pointer"
-                            data-cursor="explore"
-                        >
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold font-windoor-main tracking-tight mb-8 sm:mb-12 text-center uppercase">OUR REGIONAL NETWORK</h3>
+                
+                {/* 3D Circular Gallery Viewport */}
+                <div className="h-[400px] sm:h-[480px] lg:h-[550px] w-full relative border border-windoor-secondary bg-windoor-container-low overflow-hidden premium-card mb-8 sm:mb-12">
+                    <CircularGallery 
+                        items={galleryItems}
+                        bend={2.5}
+                        textColor="#0b0c0c"
+                        borderRadius={0.01}
+                        scrollEase={0.03}
+                        font="bold 24px 'JetBrains Mono'"
+                        onActiveIndexChange={setActiveShowroomIndex}
+                    />
+                    
+                    {/* Help hint */}
+                    <div className="absolute bottom-4 right-4 bg-white/80 backdrop-blur px-3 py-1.5 border border-windoor-secondary text-[10px] uppercase font-windoor-main tracking-wider z-10">
+                        Drag or scroll to rotate showrooms
+                    </div>
+                </div>
+
+                {/* Active Showroom Detailed Info Box */}
+                <div className="bg-white border border-windoor-secondary p-6 sm:p-10 premium-card max-w-4xl mx-auto">
+                    <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+                        <div className="md:col-span-8 space-y-4">
                             <div>
-                                <span className="font-windoor-main text-xs text-windoor-secondary uppercase tracking-[0.2em] mb-2 block">{studio.label}</span>
-                                <h5 className="text-lg font-bold font-windoor-main mb-4 uppercase leading-snug text-windoor-primary">{studio.city}</h5>
+                                <span className="font-windoor-main text-xs uppercase tracking-widest text-windoor-secondary block mb-1">Active Showroom</span>
+                                <h4 className="text-xl sm:text-2xl font-bold font-windoor-main text-windoor-primary uppercase">{activeShowroom.city} Showroom</h4>
+                            </div>
+                            
+                            <div>
+                                <span className="font-windoor-main text-xs uppercase tracking-widest text-windoor-secondary block mb-1">Address</span>
                                 <p className="text-sm text-windoor-text-muted leading-relaxed">
-                                    {studio.address.slice(0, 70)}...<br />
-                                    <span className="text-xs text-windoor-secondary mt-3 block font-mono">{studio.hours}</span>
+                                    {activeShowroom.address}
                                 </p>
                             </div>
-                            <div className="pt-4 flex items-center justify-between border-t border-windoor-secondary/10 w-full">
-                                <span className="font-windoor-main text-xs text-windoor-secondary uppercase tracking-widest">{studio.phone}</span>
-                                <span className="text-windoor-primary text-sm transition-transform group-hover:translate-x-1 group-hover:-translate-y-1 duration-300">↗</span>
+                        </div>
+                        
+                        <div className="md:col-span-4 space-y-6 pt-4 md:pt-0 md:border-l md:border-windoor-secondary/20 md:pl-8 flex flex-col justify-between h-full">
+                            <div className="space-y-4">
+                                <div>
+                                    <span className="font-windoor-main text-xs uppercase tracking-widest text-windoor-secondary block mb-1">Call Studio</span>
+                                    <a href={`tel:${activeShowroom.phone}`} className="text-sm font-windoor-main hover:underline text-windoor-primary block">{activeShowroom.phone}</a>
+                                </div>
+                                
+                                <div>
+                                    <span className="font-windoor-main text-xs uppercase tracking-widest text-windoor-secondary block mb-1">Operating Hours</span>
+                                    <span className="text-xs text-windoor-text-muted font-mono block">{activeShowroom.hours}</span>
+                                </div>
                             </div>
-                        </Link>
-                    ))}
+                            
+                            <div className="pt-4">
+                                <Link 
+                                    to={`/showrooms#${activeShowroom.id}`}
+                                    className="btn w-full py-3.5 text-center block text-xs uppercase font-windoor-main tracking-widest"
+                                    data-cursor="explore"
+                                >
+                                    Explore Showroom ↗
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
 
