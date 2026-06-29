@@ -108,7 +108,7 @@ const ProjectDetailPage = () => {
     }, [lightbox.isOpen])
 
     return (
-        <main className="pt-18">
+        <main>
 
             {/* Project Hero */}
             <section className="px-6 sm:px-16 max-w-360 mx-auto pt-20 sm:pt-24 mb-16 sm:mb-24 lg:mb-32">

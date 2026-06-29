@@ -5,7 +5,7 @@ import { termsOfService } from '../data/legalData'
 
 const TermsPage = () => {
     return (
-        <main className="pt-18">
+        <main>
             {/* Header */}
             <header className="px-6 sm:px-16 max-w-360 mx-auto pt-20 sm:pt-28 lg:pt-32 mb-16 sm:mb-24">
                 <TextReveal mode="words">

@@ -4,6 +4,7 @@ import Footer from '../components/Footer'
 import TextReveal from '../components/TextReveal'
 import ImageReveal from '../components/ImageReveal'
 import { brands } from '../data/partnersData'
+import useSEO from '../hooks/useSEO'
 
 const VideoReveal = ({ src }) => {
     const containerRef = useRef(null)
@@ -45,6 +46,11 @@ const VideoReveal = ({ src }) => {
 }
 
 const AboutPage = () => {
+    useSEO({
+        title: "About Us | Over 35 Years of Glazing Mastery - Windoor",
+        description: "Learn about Windoor's 35-year legacy of engineering premium facades, minimal windows, and architectural glazing solutions for luxury homes in Gujarat."
+    })
+
     useEffect(() => {
         const timer = setTimeout(() => {
             const hash = window.location.hash
@@ -59,7 +65,7 @@ const AboutPage = () => {
     }, [])
 
     return (
-        <main className="pt-18">
+        <main>
 
             {/* Hero Section */}
             <section className="max-w-360 mx-auto px-6 sm:px-16 pt-20 sm:pt-28 lg:pt-32 mb-16 sm:mb-28 lg:mb-40">

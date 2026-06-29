@@ -8,6 +8,8 @@ import { sliders, casements, ventilation } from "../data/productsData"
 import { projects } from "../data/projectData"
 import { showrooms } from "../data/showroomData"
 import { partners } from "../data/partnersData"
+import ShowroomCollage from "../components/ShowroomCollage"
+import useSEO from "../hooks/useSEO"
 
 const ProjectImageCarousel = ({ project, index }) => {
     const images = Array.from(
@@ -68,6 +70,11 @@ const ProjectImageCarousel = ({ project, index }) => {
 }
 
 const HomePage = () => {
+    useSEO({
+        title: "Windoor | Premium Architectural Systems, Sliding Doors & Windows",
+        description: "Windoor Marketing specializes in premium architectural glazing solutions, luxury minimal windows, high-performance sliding doors, and custom facade systems for luxury villas and residences across Gujarat."
+    })
+
     const [counts, setCounts] = useState({ years: 0, villas: 0, projects: 0, tostem: 0 })
     const statsRef = useRef(null)
     const partnerTrackRef = useRef(null)
@@ -173,7 +180,7 @@ const HomePage = () => {
 
     return (
         <>
-        <main className="flex flex-col pt-18">
+        <main className="flex flex-col ">
 
             {/* ── Video section ─────────────────────────────────────────── */}
             <div className="w-full h-screen relative overflow-hidden">
@@ -456,62 +463,9 @@ const HomePage = () => {
                 </div>
             </section>
 
-            {/* ── Showrooms preview ─────────────────────────────────────── */}
-            <section className="py-20 sm:py-32 md:py-40 bg-windoor-background border-t border-windoor-structural-grey/40">
-                <div className="px-6 sm:px-16 max-w-360 mx-auto">
-                    <div className="mb-12 sm:mb-20 text-center">
-                        <TextReveal mode="words">
-                            <p className="tracking-[3px] font-windoor-main uppercase text-xs text-windoor-text-muted mb-4">Our Presence</p>
-                        </TextReveal>
-                        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold font-windoor-main tracking-tight">
-                            <TextReveal mode="words" delay={0.2} speed={0.06}>
-                                OUR EXPERIENCE CENTERS
-                            </TextReveal>
-                        </h2>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 sm:gap-8 lg:auto-rows-[350px]">
-                        {showrooms.map((room, idx) => {
-                            const isAhmedabad = room.id === 'ahmedabad'
-                            const gridClass = isAhmedabad 
-                                ? 'col-span-12 lg:col-span-8 lg:row-span-2' 
-                                : room.id === 'gandhinagar'
-                                    ? 'col-span-12 md:col-span-1 lg:col-span-8'
-                                    : 'col-span-12 md:col-span-1 lg:col-span-4'
+            {/* ── Showrooms — Editorial Collage ─────────────────────────── */}
+            <ShowroomCollage />
 
-                            return (
-                                <Link 
-                                    key={room.id} 
-                                    to={`/showrooms#${room.id}`} 
-                                    className={`${gridClass} group cursor-pointer border border-windoor-secondary bg-white p-4 sm:p-6 flex flex-col justify-between premium-card overflow-hidden`}
-                                    data-cursor="view"
-                                >
-                                    <div className="flex flex-col h-full justify-between gap-4 bg-transparent">
-                                        <div className="relative overflow-hidden bg-windoor-container flex-grow aspect-[3/2] lg:aspect-auto">
-                                            {room.img ? (
-                                                <ImageReveal src={room.img} alt={`${room.city} Showroom`} aspectClass="h-full w-full" delay={idx * 0.05} />
-                                            ) : (
-                                                <div className="w-full h-full flex items-center justify-center bg-windoor-charcoal/5">
-                                                    <span className="font-windoor-main text-xs uppercase tracking-wider text-windoor-secondary">Image Coming Soon</span>
-                                                </div>
-                                            )}
-                                            <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 border border-windoor-secondary/30 z-10">
-                                                <span className="font-windoor-main text-[10px] uppercase tracking-wider">{room.label}</span>
-                                            </div>
-                                        </div>
-                                        <div className="flex justify-between items-center bg-transparent">
-                                            <div>
-                                                <h4 className="font-windoor-main text-base sm:text-lg font-bold uppercase text-windoor-primary">{room.city}</h4>
-                                                <p className="text-[10px] sm:text-xs text-windoor-secondary uppercase font-windoor-main tracking-widest truncate max-w-sm sm:max-w-md">{room.hours}</p>
-                                            </div>
-                                            <span className="text-windoor-primary group-hover:translate-x-2 transition-transform duration-500 text-lg">→</span>
-                                        </div>
-                                    </div>
-                                </Link>
-                            )
-                        })}
-                    </div>
-                </div>
-            </section>
 
             {/* ── Contact CTA ───────────────────────────────────────────── */}
             <section className="py-16 sm:py-20 bg-windoor-background border-y border-windoor-structural-grey/40">

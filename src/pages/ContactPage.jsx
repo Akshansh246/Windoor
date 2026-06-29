@@ -7,6 +7,7 @@ import Lanyard from '../components/Lanyard'
 import CircularGallery from '../components/CircularGallery'
 
 import { showrooms, hqContact } from '../data/showroomData'
+import useSEO from '../hooks/useSEO'
 
 const createCardFace = (side, details) => {
     if (typeof window === 'undefined') return '';
@@ -140,6 +141,11 @@ const createCardFace = (side, details) => {
 };
 
 const ContactPage = () => {
+    useSEO({
+        title: "Request a Consultation & Contact Us - Windoor",
+        description: "Get in touch with Windoor Marketing to request a consultation, quote, or site visit. Find our contact details, email addresses, and phone numbers here."
+    })
+
     const frontImage = useMemo(() => createCardFace('front', hqContact), []);
     const backImage = useMemo(() => createCardFace('back', hqContact), []);
     
@@ -152,7 +158,7 @@ const ContactPage = () => {
     })), []);
 
     return (
-        <main className="pt-18">
+        <main>
 
             {/* Hero */}
             <section className="px-6 sm:px-16 max-w-360 mx-auto pt-20 sm:pt-28 lg:pt-32 mb-12 sm:mb-20 lg:mb-32">

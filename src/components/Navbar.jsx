@@ -9,9 +9,9 @@ const Navbar = () => {
 
     const isActive = (path) => location.pathname === path
 
-    // Scroll shadow effect — as designed in Stitch
+    // Scroll effect
     useEffect(() => {
-        const onScroll = () => setScrolled(window.scrollY > 50)
+        const onScroll = () => setScrolled(window.scrollY > 40)
         window.addEventListener('scroll', onScroll, { passive: true })
         return () => window.removeEventListener('scroll', onScroll)
     }, [])
@@ -19,62 +19,112 @@ const Navbar = () => {
     // Close mobile menu on route change
     useEffect(() => {
         setMenuOpen(false)
-    }, []) 
+    }, [location.pathname])
+
     return (
-        <nav className={`flex fixed top-0 left-0 right-0 w-full uppercase font-windoor-main justify-between items-center px-4 sm:px-10 z-50 border-b transition-all duration-700 ease-in-out ${
-            scrolled 
-                ? 'py-3 sm:py-3.5 bg-windoor-background/95 backdrop-blur-xl border-windoor-outline/40 shadow-sm' 
-                : 'py-4 sm:py-5 bg-windoor-background/30 backdrop-blur-md border-windoor-outline/20'
-        }`}>
-            <Link to={'/'} className='text-xl sm:text-2xl font-windoor-secondary font-bold flex items-center'><img className='h-7 sm:h-9' src="/images/logo1.png" alt="Windoor" /></Link>
-
-            {/* Desktop Links */}
-            <div className='hidden md:flex items-center gap-6 text-[11px] lg:gap-8 tracking-widest text-windoor-text-muted'>
-                <Link to='/' className={`transition-colors hover:text-windoor-primary ${isActive('/') ? 'border-b border-windoor-primary text-windoor-primary font-bold' : ''}`}>Home</Link>
-                <Link to='/about' className={`transition-colors hover:text-windoor-primary ${isActive('/about') ? 'border-b border-windoor-primary text-windoor-primary font-bold' : ''}`}>About</Link>
-                <Link to='/products' className={`transition-colors hover:text-windoor-primary ${isActive('/products') ? 'border-b border-windoor-primary text-windoor-primary font-bold' : ''}`}>Products</Link>
-                <Link to='/projects' className={`transition-colors hover:text-windoor-primary ${isActive('/projects') ? 'border-b border-windoor-primary text-windoor-primary font-bold' : ''}`}>Projects</Link>
-                <Link to='/showrooms' className={`transition-colors hover:text-windoor-primary ${isActive('/showrooms') ? 'border-b border-windoor-primary text-windoor-primary font-bold' : ''}`}>Showrooms</Link>
-                <Link to='/contact' className={`transition-colors hover:text-windoor-primary ${isActive('/contact') ? 'border-b border-windoor-primary text-windoor-primary font-bold' : ''}`}>Contact</Link>
-            </div>
-
-            {/* Desktop CTA */}
-            <Link to='/contact' className={'btn text-[10px] tracking-widest px-5 py-2.5 hidden md:block hover:opacity-85 transition-opacity'}>Request Quote</Link>
-
-            {/* Mobile Hamburger */}
-            <button
-                className='md:hidden flex flex-col gap-1.5 cursor-pointer p-2 focus:outline-none'
-                onClick={() => setMenuOpen(!menuOpen)}
-                aria-label="Toggle menu"
+        <div 
+            className="fixed left-0 right-0 z-50 transition-all duration-500 ease-in-out"
+            style={{
+                top: "0px",
+                padding: "0 24px",
+                maxWidth: scrolled ? "960px" : "1120px",
+                margin: "0 auto"
+            }}
+        >
+            <nav 
+                className="w-full uppercase font-windoor-main flex justify-between items-center transition-all duration-500 ease-in-out"
+                style={{
+                    backgroundColor: "#ffffff",
+                    borderLeft: "1px solid rgba(115, 120, 120, 0.18)",
+                    borderRight: "1px solid rgba(115, 120, 120, 0.18)",
+                    borderBottom: "1px solid rgba(115, 120, 120, 0.18)",
+                    borderTop: "none",
+                    boxShadow: scrolled ? "0 10px 35px rgba(11, 12, 12, 0.08)" : "0 5px 15px rgba(11, 12, 12, 0.03)",
+                    borderBottomLeftRadius: "24px",
+                    borderBottomRightRadius: "24px",
+                    borderTopLeftRadius: "0px",
+                    borderTopRightRadius: "0px",
+                    padding: scrolled ? "10px 32px" : "14px 44px"
+                }}
             >
-                <span className={`block h-px w-6 bg-windoor-primary transition-all duration-300 ${menuOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
-                <span className={`block h-px w-6 bg-windoor-primary transition-all duration-300 ${menuOpen ? 'opacity-0' : ''}`}></span>
-                <span className={`block h-px w-6 bg-windoor-primary transition-all duration-300 ${menuOpen ? '-rotate-45 -translate-y-2' : ''}`}></span>
-            </button>
+                {/* Logo */}
+                <Link to={'/'} className='flex items-center'>
+                    <img className='h-6 sm:h-7.5 transition-all duration-500' src="/images/logo1.png" alt="Windoor" />
+                </Link>
 
-            {/* Mobile Dropdown */}
-            <div className={`md:hidden absolute top-full left-0 w-full bg-windoor-background/95 backdrop-blur-lg border-b border-windoor-outline/30 flex flex-col gap-0 overflow-hidden transition-all duration-300 ${menuOpen ? 'max-h-100 py-4 shadow-lg' : 'max-h-0 py-0'}`}>
-                {[
-                    { to: '/', label: 'Home' },
-                    { to: '/about', label: 'About' },
-                    { to: '/products', label: 'Products' },
-                    { to: '/projects', label: 'Projects' },
-                    { to: '/showrooms', label: 'Showrooms' },
-                    { to: '/contact', label: 'Contact' },
-                ].map(({ to, label }) => (
-                    <Link
-                        key={to}
-                        to={to}
-                        className={`px-6 sm:px-10 py-3.5 text-[11px] tracking-widest border-b border-windoor-structural-grey/30 last:border-b-0 transition-colors hover:text-windoor-primary ${isActive(to) ? 'text-windoor-primary font-bold bg-windoor-structural-grey/10' : 'text-windoor-text-muted'}`}
-                    >
-                        {label}
-                    </Link>
-                ))}
-                <div className='px-6 sm:px-10 pt-4'>
-                    <Link to='/contact' className='btn text-[11px] tracking-widest py-3 w-full text-center block'>Request Quote</Link>
+                {/* Desktop Links (Removed Contact link, styled for white background) */}
+                <div className='hidden md:flex items-center gap-7 lg:gap-9 text-[11px] tracking-widest font-medium text-windoor-text-muted'>
+                    <Link to='/' className={`transition-colors py-1 hover:text-windoor-primary ${isActive('/') ? 'border-b border-windoor-primary text-windoor-primary font-bold' : ''}`}>Home</Link>
+                    <Link to='/about' className={`transition-colors py-1 hover:text-windoor-primary ${isActive('/about') ? 'border-b border-windoor-primary text-windoor-primary font-bold' : ''}`}>About</Link>
+                    <Link to='/products' className={`transition-colors py-1 hover:text-windoor-primary ${isActive('/products') ? 'border-b border-windoor-primary text-windoor-primary font-bold' : ''}`}>Products</Link>
+                    <Link to='/projects' className={`transition-colors py-1 hover:text-windoor-primary ${isActive('/projects') ? 'border-b border-windoor-primary text-windoor-primary font-bold' : ''}`}>Projects</Link>
+                    <Link to='/showrooms' className={`transition-colors py-1 hover:text-windoor-primary ${isActive('/showrooms') ? 'border-b border-windoor-primary text-windoor-primary font-bold' : ''}`}>Showrooms</Link>
                 </div>
-            </div>
-        </nav>
+
+                {/* Desktop CTA (Dark rounded pill button on white notch) */}
+                <Link 
+                    to='/contact' 
+                    className='btn text-[10px] tracking-widest py-2.5 px-6 hidden md:block hover:opacity-85 transition-opacity'
+                    style={{ borderRadius: "9999px" }}
+                >
+                    Request Quote
+                </Link>
+
+                {/* Mobile Hamburger */}
+                <button
+                    className='md:hidden flex flex-col gap-1.5 cursor-pointer p-2 focus:outline-none'
+                    onClick={() => setMenuOpen(!menuOpen)}
+                    aria-label="Toggle menu"
+                >
+                    <span className={`block h-px w-5 bg-windoor-primary transition-all duration-300 ${menuOpen ? 'rotate-45 translate-y-1.5' : ''}`}></span>
+                    <span className={`block h-px w-5 bg-windoor-primary transition-all duration-300 ${menuOpen ? 'opacity-0' : ''}`}></span>
+                    <span className={`block h-px w-5 bg-windoor-primary transition-all duration-300 ${menuOpen ? '-rotate-45 -translate-y-1.5' : ''}`}></span>
+                </button>
+
+                {/* Mobile Dropdown (White panel dropping down from the White Notch) */}
+                <div 
+                    className={`md:hidden absolute left-6 right-6 overflow-hidden transition-all duration-300 ease-in-out`}
+                    style={{
+                        top: "100%",
+                        marginTop: "12px",
+                        backgroundColor: "#ffffff",
+                        border: "1px solid rgba(115, 120, 120, 0.18)",
+                        borderRadius: "20px",
+                        boxShadow: "0 20px 40px rgba(11, 12, 12, 0.08)",
+                        maxHeight: menuOpen ? "400px" : "0px",
+                        opacity: menuOpen ? 1 : 0,
+                        padding: menuOpen ? "16px 0" : "0px"
+                    }}
+                >
+                    <div className="flex flex-col">
+                        {[
+                            { to: '/', label: 'Home' },
+                            { to: '/about', label: 'About' },
+                            { to: '/products', label: 'Products' },
+                            { to: '/projects', label: 'Projects' },
+                            { to: '/showrooms', label: 'Showrooms' }
+                        ].map(({ to, label }) => (
+                            <Link
+                                key={to}
+                                to={to}
+                                className={`px-8 py-3 text-[11px] tracking-widest transition-colors hover:text-windoor-primary ${isActive(to) ? 'text-windoor-primary font-bold' : 'text-windoor-text-muted'}`}
+                            >
+                                {label}
+                            </Link>
+                        ))}
+                        <div className='px-8 pt-3 pb-1 border-t border-windoor-structural-grey/30 mt-2'>
+                            <Link 
+                                to='/contact' 
+                                className='btn text-[11px] tracking-widest py-3 w-full text-center block'
+                                style={{ borderRadius: "9999px" }}
+                            >
+                                Request Quote
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
     )
 }
 

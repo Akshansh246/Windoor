@@ -9,6 +9,7 @@ import ContactPage from './pages/ContactPage'
 import PrivacyPolicyPage from './pages/PrivacyPolicyPage'
 import TermsPage from './pages/TermsPage'
 import NotFoundPage from './pages/NotFoundPage'
+import ProductCategoryPage from './pages/ProductCategoryPage'
 import Navbar from "./components/Navbar"
 import ScrollToTop from "./components/ScrollToTop"
 import AmbientLayer from "./components/AmbientLayer"
@@ -23,6 +24,7 @@ const App = () => {
             <Route path="/" element={<HomePage/>} />
             <Route path="/about" element={<AboutPage/>} />
             <Route path="/products" element={<ProductsPage/>} />
+            <Route path="/products/:category" element={<ProductCategoryPage/>} />
             <Route path="/projects" element={<ProjectsPage/>} />
             <Route path="/projects/:slug" element={<ProjectDetailPage/>} />
             <Route path="/showrooms" element={<ShowroomsPage/>} />

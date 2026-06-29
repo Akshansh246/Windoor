@@ -4,8 +4,14 @@ import Footer from '../components/Footer'
 import TextReveal from '../components/TextReveal'
 import ImageReveal from '../components/ImageReveal'
 import { showrooms } from '../data/showroomData'
+import useSEO from '../hooks/useSEO'
 
 const ShowroomsPage = () => {
+    useSEO({
+        title: "Experience Centers & Showrooms in Gujarat - Windoor",
+        description: "Visit our design showrooms and experience centers in Ahmedabad, Rajkot, Anand, Mehsana, and Gandhinagar to explore minimal window systems and facades."
+    })
+
     // State to toggle between Photo and Map view for each showroom card
     const [viewMap, setViewMap] = useState({})
 
@@ -27,7 +33,7 @@ const ShowroomsPage = () => {
     }, [])
 
     return (
-        <main className="pt-18 bg-windoor-background">
+        <main className="bg-windoor-background">
 
             {/* Hero */}
             <section className="max-w-360 mx-auto px-6 sm:px-16 pt-20 sm:pt-28 lg:pt-32 mb-16 sm:mb-20">

@@ -4,8 +4,14 @@ import Footer from '../components/Footer'
 import TextReveal from '../components/TextReveal'
 import ImageReveal from '../components/ImageReveal'
 import { projects } from '../data/projectData'
+import useSEO from '../hooks/useSEO'
 
 const ProjectsPage = () => {
+    useSEO({
+        title: "Select Projects & Architectural Portfolio - Windoor",
+        description: "Browse Windoor's portfolio of landmark residential and commercial projects. Explore luxury villas and premium estates featuring minimal glazing solutions."
+    })
+
     const [filter, setFilter] = useState('ALL');
     const [locationFilter, setLocationFilter] = useState('ALL');
 
@@ -28,7 +34,7 @@ const ProjectsPage = () => {
     });
 
     return (
-        <main className="pt-18">
+        <main>
 
             {/* Hero */}
             <header className="px-6 sm:px-16 max-w-360 mx-auto pt-20 sm:pt-32 lg:pt-40 mb-12 sm:mb-20">
