@@ -4,6 +4,8 @@ import { productCategories } from '../data/productsData'
 import useSEO from '../hooks/useSEO'
 import Footer from '../components/Footer'
 
+import { useState, useEffect } from 'react'
+
 const ProductsPage = () => {
     const navigate = useNavigate()
 
@@ -11,6 +13,44 @@ const ProductsPage = () => {
         title: "Architectural Systems & Product Categories - Windoor",
         description: "Explore our collection of sliding systems, minimalist casements, and ventilation solutions designed to integrate seamlessly into modern luxury architecture."
     })
+
+    const [layoutConfig, setLayoutConfig] = useState({
+        width: 420,
+        height: 350,
+        cardDistance: 50,
+        verticalDistance: 60
+    })
+
+    useEffect(() => {
+        const updateLayout = () => {
+            const w = window.innerWidth
+            if (w < 480) {
+                setLayoutConfig({
+                    width: 270,
+                    height: 230,
+                    cardDistance: 25,
+                    verticalDistance: 35
+                })
+            } else if (w < 768) {
+                setLayoutConfig({
+                    width: 330,
+                    height: 280,
+                    cardDistance: 35,
+                    verticalDistance: 45
+                })
+            } else {
+                setLayoutConfig({
+                    width: 420,
+                    height: 350,
+                    cardDistance: 50,
+                    verticalDistance: 60
+                })
+            }
+        }
+        updateLayout()
+        window.addEventListener('resize', updateLayout)
+        return () => window.removeEventListener('resize', updateLayout)
+    }, [])
 
     const handleCardClick = (idx) => {
         const category = productCategories[idx]
@@ -22,7 +62,7 @@ const ProductsPage = () => {
     return (
         <main className="bg-windoor-background min-h-screen flex flex-col justify-between">
             {/* Products Main View */}
-            <div className="flex-grow max-w-360 mx-auto px-6 sm:px-16 w-full pt-15 sm:pt-40 pb-20">
+            <div className="flex-grow max-w-360 mx-auto px-6 sm:px-16 w-full pt-24 sm:pt-40 pb-20">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 sm:gap-16 items-center min-h-[60vh]">
                     
                     {/* Left Column: Heading and Description */}
@@ -69,16 +109,16 @@ const ProductsPage = () => {
                     </div>
 
                     {/* Right Column: CardSwap Stack */}
-                    <div className="lg:col-span-6 flex justify-center items-center relative min-h-[480px] lg:min-h-[550px] w-full">
+                    <div className="lg:col-span-6 flex justify-center items-center relative min-h-[350px] sm:min-h-[480px] lg:min-h-[550px] w-full">
                         <div 
                             className="relative flex items-center justify-center"
-                            style={{ width: "420px", height: "350px" }}
+                            style={{ width: `${layoutConfig.width}px`, height: `${layoutConfig.height}px` }}
                         >
                             <CardSwap
-                                width={420}
-                                height={350}
-                                cardDistance={50}
-                                verticalDistance={60}
+                                width={layoutConfig.width}
+                                height={layoutConfig.height}
+                                cardDistance={layoutConfig.cardDistance}
+                                verticalDistance={layoutConfig.verticalDistance}
                                 delay={4500}
                                 pauseOnHover={true}
                                 onCardClick={handleCardClick}
