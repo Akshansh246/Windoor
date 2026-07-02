@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { Route, Routes } from "react-router"
 import HomePage from './pages/HomePage'
 import AboutPage from './pages/AboutPage'
@@ -13,10 +14,23 @@ import ProductCategoryPage from './pages/ProductCategoryPage'
 import Navbar from "./components/Navbar"
 import ScrollToTop from "./components/ScrollToTop"
 import AmbientLayer from "./components/AmbientLayer"
+import LoadingScreen from "./components/LoadingScreen"
 
 const App = () => {
+    const [showLoading, setShowLoading] = useState(() => {
+        return !sessionStorage.getItem('windoor_loaded')
+    })
+
+    const handleLoadingComplete = () => {
+        setShowLoading(false)
+        sessionStorage.setItem('windoor_loaded', 'true')
+    }
+
     return (
         <>
+        {showLoading && (
+            <LoadingScreen onComplete={handleLoadingComplete} />
+        )}
         <AmbientLayer/>
         <Navbar/>
         <ScrollToTop/>
