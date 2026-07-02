@@ -248,7 +248,7 @@ const HomePage = () => {
             {/* ── Video section ─────────────────────────────────────────── */}
             <div className="w-full h-screen relative overflow-hidden">
                 <div className="hero-video-container">
-                    <video className="hero-video" muted autoPlay loop src="/mainVideo.mp4"></video>
+                    <video className="hero-video scale-[1.28]" muted autoPlay loop playsInline src="/mainVid.mp4"></video>
                 </div>
                 
                 <div className="absolute bottom-16 sm:bottom-40 w-fit font-windoor-main left-6 sm:left-16 flex flex-col gap-4 sm:gap-5 text-white max-w-[90vw] z-20">
