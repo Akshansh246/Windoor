@@ -4,7 +4,7 @@ import Footer from "../components/Footer"
 import TextReveal from "../components/TextReveal"
 import ImageReveal from "../components/ImageReveal"
 import Particles from "../components/Particles"
-import { sliders, casements, ventilation } from "../data/productsData"
+import { productCategories } from "../data/productsData"
 import { projects } from "../data/projectData"
 import { showrooms } from "../data/showroomData"
 import { partners } from "../data/partnersData"
@@ -82,6 +82,11 @@ const HomePage = () => {
     const [canScrollLeft, setCanScrollLeft] = useState(false)
     const [canScrollRight, setCanScrollRight] = useState(true)
 
+    const productTrackRef = useRef(null)
+    const [isProductHovered, setIsProductHovered] = useState(false)
+    const [canProductScrollLeft, setCanProductScrollLeft] = useState(false)
+    const [canProductScrollRight, setCanProductScrollRight] = useState(true)
+
     const updateScrollButtons = () => {
         const container = partnerTrackRef.current
         if (!container) return
@@ -117,6 +122,64 @@ const HomePage = () => {
         if (!container) return
 
         const cards = container.querySelectorAll(".premium-card")
+        if (cards.length === 0) return
+
+        const cardWidth = cards[0].getBoundingClientRect().width
+        const gap = parseFloat(getComputedStyle(container).gap) || 0
+        const step = cardWidth + gap
+
+        const currentScroll = container.scrollLeft
+        let targetScroll
+
+        if (direction === "left") {
+            const currentIndex = Math.round(currentScroll / step)
+            targetScroll = Math.max(0, (currentIndex - 1) * step)
+        } else {
+            const currentIndex = Math.round(currentScroll / step)
+            const maxScroll = container.scrollWidth - container.clientWidth
+            targetScroll = Math.min(maxScroll, (currentIndex + 1) * step)
+        }
+
+        container.scrollTo({
+            left: targetScroll,
+            behavior: "smooth"
+        })
+    }
+
+    const updateProductScrollButtons = () => {
+        const container = productTrackRef.current
+        if (!container) return
+        setCanProductScrollLeft(container.scrollLeft > 5)
+        setCanProductScrollRight(container.scrollLeft + container.clientWidth < container.scrollWidth - 5)
+    }
+
+    useEffect(() => {
+        const container = productTrackRef.current
+        if (!container) return
+
+        updateProductScrollButtons()
+
+        const handleScroll = () => {
+            updateProductScrollButtons()
+        }
+
+        container.addEventListener("scroll", handleScroll, { passive: true })
+        window.addEventListener("resize", updateProductScrollButtons)
+
+        const timeoutId = setTimeout(updateProductScrollButtons, 500)
+
+        return () => {
+            container.removeEventListener("scroll", handleScroll)
+            window.removeEventListener("resize", updateProductScrollButtons)
+            clearTimeout(timeoutId)
+        }
+    }, [])
+
+    const handleProductScrollClick = (direction) => {
+        const container = productTrackRef.current
+        if (!container) return
+
+        const cards = container.querySelectorAll(".product-card")
         if (cards.length === 0) return
 
         const cardWidth = cards[0].getBoundingClientRect().width
@@ -351,11 +414,11 @@ const HomePage = () => {
             
 
             {/* ── Architectural Systems ──────────────────────────────────── */}
-            <section className="py-20 sm:py-32 md:py-40 bg-windoor-background">
-                <div className="px-6 sm:px-16 max-w-360 mx-auto">
-                    <div className="mb-12 sm:mb-20">
+            <section className="py-20 sm:py-32 md:py-40 bg-windoor-background relative">
+                <div className="w-full flex flex-col justify-center">
+                    <div className="w-full max-w-360 mx-auto px-6 sm:px-16 mb-8 sm:mb-12">
                         <TextReveal mode="words">
-                            <p className="tracking-[3px] font-windoor-main uppercase text-xs text-windoor-text-muted mb-4">Our Expertise</p>
+                            <p className="tracking-[3px] font-windoor-main uppercase text-xs text-windoor-text-muted mb-2">Our Expertise</p>
                         </TextReveal>
                         <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold font-windoor-main tracking-tight">
                             <TextReveal mode="words" delay={0.2} speed={0.06}>
@@ -363,72 +426,73 @@ const HomePage = () => {
                             </TextReveal>
                         </h2>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6 sm:gap-8 lg:auto-rows-[360px]">
-                        {[
-                            {
-                                title: sliders[3]?.title || "Motorised & Minimal System",
-                                desc: sliders[3]?.desc || "State-of-the-art motorized sliding systems with ultra-slim 20mm visual sightlines.",
-                                img: sliders[3]?.images?.[0]?.src || "/images/Keller.jpg",
-                                link: "/products#sliders",
-                                isFeatured: true
-                            },
-                            {
-                                title: casements[3]?.title || "Minimal Casements",
-                                desc: casements[3]?.desc || "Concealed hinges and micro-frames designed to frame exterior landscapes seamlessly.",
-                                img: casements[3]?.images?.[0]?.src || "/images/tostem_main.jpg",
-                                link: "/products#casements"
-                            },
-                            {
-                                title: sliders[1]?.title || "DGU System",
-                                desc: sliders[1]?.desc || "Double Glazed Units built with advanced thermal profiles to maximize insulation.",
-                                img: sliders[1]?.images?.[0]?.src || "/images/tostem_main.jpg",
-                                link: "/products#sliders"
-                            },
-                            {
-                                title: casements[2]?.title || "Grants Casements",
-                                desc: casements[2]?.desc || "Luxury large-span casement systems featuring hidden friction stays and perimeter seals.",
-                                img: casements[2]?.images?.[0]?.src || "/images/tostem_main.jpg",
-                                link: "/products#casements"
-                            },
-                            {
-                                title: sliders[4]?.title || "Curved Sliding System",
-                                desc: sliders[4]?.desc || "Bespoke curved tracks that align with custom architectural radiuses without sacrificing smooth operation.",
-                                img: sliders[4]?.images?.[0]?.src || "/images/Keller.jpg",
-                                link: "/products#sliders"
-                            },
-                            {
-                                title: ventilation.title || "Ventilation Options",
-                                desc: ventilation.desc || "Acoustically buffered ventilation slots and micro-vents designed to bring natural air circulation.",
-                                img: ventilation.images?.[0]?.src || "/images/facade.jpg",
-                                link: "/products#ventilation"
-                            }
-                        ].map((prod, idx) => {
-                            const gridClass = prod.isFeatured
-                                ? 'col-span-12 lg:col-span-8 lg:row-span-2'
-                                : 'col-span-12 md:col-span-1 lg:col-span-4'
+                    
+                    <div 
+                        className="relative w-full"
+                        onMouseEnter={() => setIsProductHovered(true)}
+                        onMouseLeave={() => setIsProductHovered(false)}
+                    >
+                        {/* Left Arrow Button */}
+                        <button
+                            onClick={() => handleProductScrollClick("left")}
+                            className={`absolute left-6 sm:left-16 top-1/2 -translate-y-1/2 z-30 w-12 h-12 flex items-center justify-center rounded-full bg-white/90 border border-windoor-structural-grey/60 text-windoor-primary shadow-sm transition-all duration-300 hover:bg-windoor-primary hover:text-white hover:border-windoor-primary cursor-pointer ${
+                                isProductHovered && canProductScrollLeft ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
+                            }`}
+                            aria-label="Scroll left"
+                        >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+                                <path d="M15 19l-7-7 7-7" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                        </button>
 
-                            return (
+                        {/* Right Arrow Button */}
+                        <button
+                            onClick={() => handleProductScrollClick("right")}
+                            className={`absolute right-6 sm:right-16 top-1/2 -translate-y-1/2 z-30 w-12 h-12 flex items-center justify-center rounded-full bg-white/90 border border-windoor-structural-grey/60 text-windoor-primary shadow-sm transition-all duration-300 hover:bg-windoor-primary hover:text-white hover:border-windoor-primary cursor-pointer ${
+                                isProductHovered && canProductScrollRight ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
+                            }`}
+                            aria-label="Scroll right"
+                        >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+                                <path d="M9 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                        </button>
+
+                        <div 
+                            ref={productTrackRef} 
+                            className="w-full overflow-x-auto flex gap-6 sm:gap-8 px-6 sm:px-16 scroll-smooth no-scrollbar scroll-pl-6 sm:scroll-pl-16"
+                            style={{
+                                scrollbarWidth: "none",
+                                msOverflowStyle: "none"
+                            }}
+                        >
+                            {productCategories.map((cat, idx) => {
+                                const cardImage = cat.heroImage || (cat.sections.find(s => s.img)?.img) || ""
+                                return (
                                 <Link 
-                                    key={idx} 
-                                    to={prod.link} 
-                                    className={`${gridClass} group border border-windoor-secondary bg-windoor-container-low p-4 sm:p-6 flex flex-col justify-between premium-card overflow-hidden`} 
+                                    key={cat.slug} 
+                                    to={`/products/${cat.slug}`} 
+                                    className="w-[80vw] sm:w-[45vw] md:w-[40vw] lg:w-[32vw] max-w-[480px] flex-shrink-0 border border-windoor-secondary group cursor-pointer overflow-hidden bg-windoor-container-low product-card" 
                                     data-cursor="explore"
                                 >
-                                    <div className="flex flex-col h-full justify-between gap-4 bg-transparent">
-                                        <div className="relative overflow-hidden bg-windoor-container flex-grow aspect-[3/2] lg:aspect-auto">
-                                            <ImageReveal src={prod.img} alt={prod.title} aspectClass="w-full h-full object-cover" delay={idx * 0.05} />
+                                    <div className="h-56 sm:h-72 w-full overflow-hidden relative">
+                                        <ImageReveal src={cardImage} alt={cat.title} aspectClass="h-full w-full" delay={idx * 0.05} />
+                                    </div>
+                                    <div className="p-6 sm:p-10 flex flex-col gap-4 items-start bg-transparent">
+                                        <div className="font-windoor-main flex justify-between w-full items-start">
+                                            <div>
+                                                <h4 className="text-lg sm:text-xl font-bold uppercase">{cat.title}</h4>
+                                                <p className="text-xs text-windoor-text-muted mt-1 leading-relaxed line-clamp-2">{cat.introText}</p>
+                                            </div>
+                                            <span className="text-windoor-primary text-lg transition-transform group-hover:translate-x-1 group-hover:-translate-y-1 duration-300">↗</span>
                                         </div>
-                                        <div className="space-y-2 bg-transparent">
-                                            <h4 className="font-windoor-main text-base sm:text-lg font-bold uppercase text-windoor-primary">{prod.title}</h4>
-                                            <p className="text-xs sm:text-sm text-windoor-text-muted leading-relaxed line-clamp-2">{prod.desc}</p>
-                                        </div>
-                                        <div className="self-start font-windoor-main text-[10px] uppercase tracking-widest font-bold border-b border-windoor-primary pb-1 group-hover:pr-4 transition-all duration-300">
+                                        <div className="font-windoor-main text-[10px] uppercase tracking-widest font-bold border-b border-windoor-primary pb-1 group-hover:pr-4 transition-all duration-300">
                                             Explore
                                         </div>
                                     </div>
                                 </Link>
-                            )
-                        })}
+                            )})}
+                        </div>
                     </div>
                 </div>
             </section>
