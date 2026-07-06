@@ -3,7 +3,7 @@ import { Link } from "react-router"
 import Footer from "../components/Footer"
 import TextReveal from "../components/TextReveal"
 import ImageReveal from "../components/ImageReveal"
-import Particles from "../components/Particles"
+import Hyperspeed from "../components/Hyperspeed"
 import { productCategories } from "../data/productsData"
 import { projects } from "../data/projectData"
 import { showrooms } from "../data/showroomData"
@@ -532,16 +532,38 @@ const HomePage = () => {
 
 
             {/* ── Contact CTA ───────────────────────────────────────────── */}
-            <section className="py-16 sm:py-20 bg-windoor-background border-y border-windoor-structural-grey/40">
-                <div className="px-6 sm:px-16 max-w-360 mx-auto text-center space-y-8 sm:space-y-12">
-                    <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold font-windoor-main uppercase tracking-tight">
-                        <TextReveal mode="words" speed={0.06}>
-                            Ready to start your project?
-                        </TextReveal>
-                    </h3>
-                    <div className="flex justify-center">
-                        <Link to="/contact" className="btn px-10 sm:px-16 py-5 sm:py-6 font-windoor-main text-xs uppercase tracking-[0.2em]">
-                            Request a Consultation
+            <section className="relative py-24 sm:py-32 overflow-hidden bg-windoor-primary text-white border-y border-windoor-secondary/20">
+                {/* Background Hyperspeed WebGL Effect */}
+                <div className="absolute inset-0 w-full h-full pointer-events-none z-0">
+                    <Hyperspeed />
+                </div>
+                
+                {/* Glowing decorative gradient behind the text */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-white/[0.03] rounded-full blur-[80px] pointer-events-none z-0" />
+                
+                <div className="relative px-6 sm:px-16 max-w-360 mx-auto text-center space-y-8 sm:space-y-10 z-20">
+                    <div className="space-y-4">
+                        <span className="tracking-[6px] font-windoor-main uppercase text-[10px] sm:text-xs text-windoor-structural-grey/70 block">
+                            Let's Build Something Exceptional
+                        </span>
+                        <h3 className="text-2xl sm:text-4xl md:text-5xl font-bold font-windoor-main uppercase tracking-tight leading-tight">
+                            <TextReveal mode="words" speed={0.06}>
+                                Ready to start your project?
+                            </TextReveal>
+                        </h3>
+                    </div>
+                    
+                    <p className="font-windoor-secondary text-sm sm:text-base text-windoor-structural-grey max-w-xl mx-auto leading-relaxed">
+                        Consult with our architectural specialists to design bespoke, high-performance glazing solutions tailored for your space.
+                    </p>
+                    
+                    <div className="flex justify-center pt-4">
+                        <Link 
+                            to="/contact" 
+                            className="group relative px-10 sm:px-16 py-5 sm:py-6 bg-white text-windoor-primary font-windoor-main text-xs uppercase tracking-[0.2em] transition-all duration-300 hover:bg-windoor-structural-grey hover:scale-105 active:scale-100 flex items-center gap-3 overflow-hidden cursor-pointer"
+                        >
+                            <span>Talk to Our Team</span>
+                            <span className="inline-block transition-transform duration-300 group-hover:translate-x-2">→</span>
                         </Link>
                     </div>
                 </div>

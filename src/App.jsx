@@ -15,6 +15,7 @@ import Navbar from "./components/Navbar"
 import ScrollToTop from "./components/ScrollToTop"
 import AmbientLayer from "./components/AmbientLayer"
 import LoadingScreen from "./components/LoadingScreen"
+import ContactPopup from "./components/ContactPopup"
 
 const App = () => {
     const [showLoading, setShowLoading] = useState(() => {
@@ -34,6 +35,7 @@ const App = () => {
         <AmbientLayer/>
         <Navbar/>
         <ScrollToTop/>
+        <ContactPopup/>
         <Routes>
             <Route path="/" element={<HomePage/>} />
             <Route path="/about" element={<AboutPage/>} />
